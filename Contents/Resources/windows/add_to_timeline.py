@@ -83,35 +83,6 @@ class AddToTimeline(QDialog):
         idx = self.treeFiles.timeline_model.model.index(new_index, 0)
         self.treeFiles.setCurrentIndex(idx)
 
-    def openFile(self, fileName):
-        '''open one video file'''
-        log.info("btnMoveDownClicked")
-
-        # Get selected file
-        files = self.treeFiles.timeline_model.files
-
-        selected_index = None
-        if self.treeFiles.selected:
-            selected_index = self.treeFiles.selected.row()
-
-        # Ignore if empty files
-        if not files or selected_index == None:
-            return
-
-        # New index
-        new_index = min(selected_index + 1, len(files) - 1)
-        log.info(new_index)
-
-        # Remove item and move it
-        files.insert(new_index, files.pop(selected_index))
-
-        # Refresh tree
-        self.treeFiles.refresh_view()
-
-        # Select new position
-        idx = self.treeFiles.timeline_model.model.index(new_index, 0)
-        self.treeFiles.setCurrentIndex(idx)
-
     def btnMoveDownClicked(self, event):
         """Callback for move up button click"""
         log.info("btnMoveDownClicked")

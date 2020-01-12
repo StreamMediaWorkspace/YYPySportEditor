@@ -33,6 +33,7 @@ import openshot  # Python module for libopenshot (required video editing module 
 from classes.logger import log
 from classes.app import get_app
 from classes.query import Clip
+from PyQt5.QtCore import *
 
 try:
     import json
@@ -42,6 +43,8 @@ except ImportError:
 
 class VideoWidget(QWidget):
     """ A QWidget used on the video display widget """
+
+    positionChangedSignal = pyqtSignal(int)
 
     def paintEvent(self, event, *args):
         """ Custom paint event """
@@ -67,6 +70,7 @@ class VideoWidget(QWidget):
             center = self.centeredViewport(self.width(), self.height())
             painter.drawImage(center, scaledPix)
 
+        '''
         if self.transforming_clip:
             # Draw transform handles on top of video preview
             # Get framerate
@@ -239,7 +243,7 @@ class VideoWidget(QWidget):
 
             # Remove transform
             painter.resetTransform()
-
+        '''
         # End painter
         painter.end()
 
@@ -595,7 +599,7 @@ class VideoWidget(QWidget):
         self.current_image = None
 
         # Get a reference to the window object
-        self.win = get_app().window
+        #self.win = get_app().window
 
         # Show Property timer
         # Timer to use a delay before sending MaxSizeChanged signals (so we don't spam libopenshot)
@@ -606,5 +610,5 @@ class VideoWidget(QWidget):
         self.delayed_resize_timer.stop()
 
         # Connect to signals
-        self.win.TransformSignal.connect(self.transformTriggered)
-        self.win.refreshFrameSignal.connect(self.refreshTriggered)
+        #self.win.TransformSignal.connect(self.transformTriggered)
+        #self.win.refreshFrameSignal.connect(self.refreshTriggered)

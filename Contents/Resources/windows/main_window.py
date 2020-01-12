@@ -94,7 +94,7 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
     def closeEvent(self, event):
 
         # Close any tutorial dialogs
-        #self.tutorial_manager.exit_manager()
+        self.tutorial_manager.exit_manager()
 
         # Prompt user to save (if needed)
         if get_app().project.needs_save() and not self.mode == "unittest":
@@ -167,7 +167,7 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
             # No backup project found
             # Load a blank project (to propagate the default settings)
             get_app().project.load("")
-            #selctionUndo.setEnabled(False)
+            self.actionUndo.setEnabled(False)
             self.actionRedo.setEnabled(False)
             self.SetWindowTitle()
 
@@ -653,7 +653,7 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
     def actionAdd_to_Timeline_trigger(self, event):
         # Loop through selected files
         f = None
-        files = [""]
+        files = []
         for file_id in self.selected_files:
             # Find matching file
             files.append(File.get(id=file_id))
@@ -1750,11 +1750,11 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
         # Files
         if app.context_menu_object == "files":
             s.set("file_view", "details")
-            #self.tabFiles.layout().removeWidget(self.filesTreeView)
+            self.tabFiles.layout().removeWidget(self.filesTreeView)
             self.filesTreeView.deleteLater()
             self.filesTreeView = None
             self.filesTreeView = FilesTreeView(self)
-            #self.tabFiles.layout().addWidget(self.filesTreeView)
+            self.tabFiles.layout().addWidget(self.filesTreeView)
 
         # Transitions
         elif app.context_menu_object == "transitions":
@@ -1763,7 +1763,7 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
             self.transitionsTreeView.deleteLater()
             self.transitionsTreeView = None
             self.transitionsTreeView = TransitionsTreeView(self)
-            #self.tabTransitions.layout().addWidget(self.transitionsTreeView)
+            self.tabTransitions.layout().addWidget(self.transitionsTreeView)
 
         # Effects
         elif app.context_menu_object == "effects":
@@ -1772,7 +1772,7 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
             self.effectsTreeView.deleteLater()
             self.effectsTreeView = None
             self.effectsTreeView = EffectsTreeView(self)
-            #self.tabEffects.layout().addWidget(self.effectsTreeView)
+            self.tabEffects.layout().addWidget(self.effectsTreeView)
 
     def actionThumbnailView_trigger(self, event):
         log.info("Switch to Thumbnail View")
@@ -1788,11 +1788,11 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
         # Files
         if app.context_menu_object == "files":
             s.set("file_view", "thumbnail")
-            #self.tabFiles.layout().removeWidget(self.filesTreeView)
+            self.tabFiles.layout().removeWidget(self.filesTreeView)
             self.filesTreeView.deleteLater()
             self.filesTreeView = None
             self.filesTreeView = FilesListView(self)
-            #self.tabFiles.layout().addWidget(self.filesTreeView)
+            self.tabFiles.layout().addWidget(self.filesTreeView)
 
         # Transitions
         elif app.context_menu_object == "transitions":
@@ -1801,7 +1801,7 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
             self.transitionsTreeView.deleteLater()
             self.transitionsTreeView = None
             self.transitionsTreeView = TransitionsListView(self)
-            #self.tabTransitions.layout().addWidget(self.transitionsTreeView)
+            self.tabTransitions.layout().addWidget(self.transitionsTreeView)
 
         # Effects
         elif app.context_menu_object == "effects":
@@ -1810,24 +1810,20 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
             self.effectsTreeView.deleteLater()
             self.effectsTreeView = None
             self.effectsTreeView = EffectsListView(self)
-            #self.tabEffects.layout().addWidget(self.effectsTreeView)
+            self.tabEffects.layout().addWidget(self.effectsTreeView)
 
     def resize_contents(self):
         if self.filesTreeView:
             self.filesTreeView.resize_contents()
 
     def getDocks(self):
-        return [self.dockVideo, self.dockTimeline]
         """ Get a list of all dockable widgets """
-
-        """
         return [self.dockFiles,
                 self.dockTransitions,
                 self.dockEffects,
                 self.dockVideo,
                 self.dockProperties,
                 self.dockTimeline]
-        """
 
     def removeDocks(self):
         """ Remove all dockable widgets on main screen """
@@ -1868,35 +1864,24 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
 
     def actionSimple_View_trigger(self, event):
         """ Switch to the default / simple view  """
-
-        """
         self.removeDocks()
 
         # Add Docks
-        #self.addDocks([self.dockFiles, self.dockTransitions, self.dockEffects, self.dockVideo], Qt.TopDockWidgetArea)
-        self.addDocks([self.dockVideo], Qt.TopDockWidgetArea)
+        self.addDocks([self.dockFiles, self.dockTransitions, self.dockEffects, self.dockVideo], Qt.TopDockWidgetArea)
 
         self.floatDocks(False)
-        #self.tabifyDockWidget(self.dockFiles, self.dockTransitions)
-        #self.tabifyDockWidget(self.dockTransitions, self.dockEffects)
-        #self.showDocks([self.dockFiles, self.dockTransitions, self.dockEffects, self.dockVideo])
-        self.showDocks([self.dockVideo])
+        self.tabifyDockWidget(self.dockFiles, self.dockTransitions)
+        self.tabifyDockWidget(self.dockTransitions, self.dockEffects)
+        self.showDocks([self.dockFiles, self.dockTransitions, self.dockEffects, self.dockVideo])
 
         # Set initial size of docks
         simple_state = "AAAA/wAAAAD9AAAAAwAAAAAAAAEnAAAC3/wCAAAAAvwAAAJeAAAApwAAAAAA////+gAAAAACAAAAAfsAAAAYAGQAbwBjAGsASwBlAHkAZgByAGEAbQBlAAAAAAD/////AAAAAAAAAAD7AAAAHABkAG8AYwBrAFAAcgBvAHAAZQByAHQAaQBlAHMAAAAAJwAAAt8AAACnAP///wAAAAEAAAEcAAABQPwCAAAAAfsAAAAYAGQAbwBjAGsASwBlAHkAZgByAGEAbQBlAQAAAVgAAAAVAAAAAAAAAAAAAAACAAAERgAAAtj8AQAAAAH8AAAAAAAABEYAAAD6AP////wCAAAAAvwAAAAnAAABwAAAALQA/////AEAAAAC/AAAAAAAAAFcAAAAewD////6AAAAAAIAAAAD+wAAABIAZABvAGMAawBGAGkAbABlAHMBAAAAAP////8AAACYAP////sAAAAeAGQAbwBjAGsAVAByAGEAbgBzAGkAdABpAG8AbgBzAQAAAAD/////AAAAmAD////7AAAAFgBkAG8AYwBrAEUAZgBmAGUAYwB0AHMBAAAAAP////8AAACYAP////sAAAASAGQAbwBjAGsAVgBpAGQAZQBvAQAAAWIAAALkAAAARwD////7AAAAGABkAG8AYwBrAFQAaQBtAGUAbABpAG4AZQEAAAHtAAABEgAAAJYA////AAAERgAAAAEAAAABAAAAAgAAAAEAAAAC/AAAAAEAAAACAAAAAQAAAA4AdABvAG8AbABCAGEAcgEAAAAA/////wAAAAAAAAAA"
         self.restoreState(qt_types.str_to_bytes(simple_state))
-        """
-
         QCoreApplication.processEvents()
 
 
     def actionAdvanced_View_trigger(self, event):
         """ Switch to an alternative view """
-        self.addDocks([self.dockVideo], Qt.TopDockWidgetArea)
-
-        return
-
-        """
         self.removeDocks()
 
         # Add Docks
@@ -1912,7 +1897,6 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
         advanced_state = "AAAA/wAAAAD9AAAAAwAAAAAAAACCAAAC3/wCAAAAAvsAAAASAGQAbwBjAGsARgBpAGwAZQBzAQAAACcAAALfAAAAmAD////8AAACXgAAAKcAAAAAAP////oAAAAAAgAAAAH7AAAAGABkAG8AYwBrAEsAZQB5AGYAcgBhAG0AZQAAAAAA/////wAAAAAAAAAAAAAAAQAAANUAAALf/AIAAAAC+wAAABwAZABvAGMAawBQAHIAbwBwAGUAcgB0AGkAZQBzAQAAACcAAALfAAAAnwD////7AAAAGABkAG8AYwBrAEsAZQB5AGYAcgBhAG0AZQEAAAFYAAAAFQAAAAAAAAAAAAAAAgAAAuMAAALY/AEAAAAB/AAAAIgAAALjAAABWgD////8AgAAAAL8AAAAJwAAAe8AAACYAP////wBAAAAAvsAAAAeAGQAbwBjAGsAVAByAGEAbgBzAGkAdABpAG8AbgBzAQAAAIgAAACKAAAAbAD////7AAAAEgBkAG8AYwBrAFYAaQBkAGUAbwEAAAEYAAACUwAAAEcA/////AAAAhwAAADjAAAAmAD////8AQAAAAL7AAAAGABkAG8AYwBrAFQAaQBtAGUAbABpAG4AZQEAAACIAAACUgAAAPoA////+wAAABYAZABvAGMAawBFAGYAZgBlAGMAdABzAQAAAuAAAACLAAAAWgD///8AAALjAAAAAQAAAAEAAAACAAAAAQAAAAL8AAAAAQAAAAIAAAABAAAADgB0AG8AbwBsAEIAYQByAQAAAAD/////AAAAAAAAAAA="
         self.restoreState(qt_types.str_to_bytes(advanced_state))
         QCoreApplication.processEvents()
-        """
 
     def actionFreeze_View_trigger(self, event):
         """ Freeze all dockable widgets on the main screen """
@@ -1938,12 +1922,10 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
         s.set("tutorial_enabled", True)
         s.set("tutorial_ids", "")
 
-        '''
         # Show first tutorial dialog again
         if self.tutorial_manager:
             self.tutorial_manager.exit_manager()
             self.tutorial_manager = TutorialManager(self)
-        '''
 
     def SetWindowTitle(self, profile=None):
         """ Set the window title based on a variety of factors """
@@ -2124,7 +2106,7 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
         self.filesToolbar.addWidget(self.filesFilter)
         self.actionFilesClear.setEnabled(False)
         self.filesToolbar.addAction(self.actionFilesClear)
-        #self.tabFiles.layout().addWidget(self.filesToolbar)
+        self.tabFiles.layout().addWidget(self.filesToolbar)
 
         # Add transitions toolbar
         self.transitionsToolbar = QToolBar("Transitions Toolbar")
@@ -2141,7 +2123,7 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
         self.transitionsToolbar.addWidget(self.transitionsFilter)
         self.actionTransitionsClear.setEnabled(False)
         self.transitionsToolbar.addAction(self.actionTransitionsClear)
-        #self.tabTransitions.layout().addWidget(self.transitionsToolbar)
+        self.tabTransitions.layout().addWidget(self.transitionsToolbar)
 
         # Add effects toolbar
         self.effectsToolbar = QToolBar("Effects Toolbar")
@@ -2151,7 +2133,7 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
         self.effectsToolbar.addWidget(self.effectsFilter)
         self.actionEffectsClear.setEnabled(False)
         self.effectsToolbar.addAction(self.actionEffectsClear)
-        #self.tabEffects.layout().addWidget(self.effectsToolbar)
+        self.tabEffects.layout().addWidget(self.effectsToolbar)
 
         # Add Video Preview toolbar
         self.videoToolbar = QToolBar("Video Toolbar")
@@ -2265,13 +2247,13 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
     def moveEvent(self, event):
         """ Move tutorial dialogs also (if any)"""
         QMainWindow.moveEvent(self, event)
-        #if self.tutorial_manager:
-        #    self.tutorial_manager.re_position_dialog()
+        if self.tutorial_manager:
+            self.tutorial_manager.re_position_dialog()
 
     def resizeEvent(self, event):
         QMainWindow.resizeEvent(self, event)
-        #if self.tutorial_manager:
-        #    self.tutorial_manager.re_position_dialog()
+        if self.tutorial_manager:
+            self.tutorial_manager.re_position_dialog()
 
     def showEvent(self, event):
         """ Have any child windows follow main-window state """
@@ -2410,7 +2392,7 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
         track_metric_screen("main-screen")
 
         # Create blank tutorial manager
-        #self.tutorial_manager = None
+        self.tutorial_manager = None
 
         # Load UI from designer
         ui_util.load_ui(self, self.ui_path)
@@ -2455,7 +2437,7 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
             self.filesTreeView = FilesTreeView(self)
         else:
             self.filesTreeView = FilesListView(self)
-        #self.tabFiles.layout().addWidget(self.filesTreeView)
+        self.tabFiles.layout().addWidget(self.filesTreeView)
         self.filesTreeView.setFocus()
 
         # Setup transitions tree
@@ -2463,14 +2445,14 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
             self.transitionsTreeView = TransitionsTreeView(self)
         else:
             self.transitionsTreeView = TransitionsListView(self)
-        #self.tabTransitions.layout().addWidget(self.transitionsTreeView)
+        self.tabTransitions.layout().addWidget(self.transitionsTreeView)
 
         # Setup effects tree
         if s.get("effects_view") == "details":
             self.effectsTreeView = EffectsTreeView(self)
         else:
             self.effectsTreeView = EffectsListView(self)
-        #self.tabEffects.layout().addWidget(self.effectsTreeView)
+        self.tabEffects.layout().addWidget(self.effectsTreeView)
 
         # Process events before continuing
         # TODO: Figure out why this is needed for a backup recovery to correctly show up on the timeline
@@ -2480,8 +2462,8 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
         self.txtPropertyFilter.setPlaceholderText(_("Filter"))
         self.propertyTableView = PropertiesTableView(self)
         self.selectionLabel = SelectionLabel(self)
-        #self.dockPropertiesContent.layout().addWidget(self.selectionLabel, 0, 1)
-        #self.dockPropertiesContent.layout().addWidget(self.propertyTableView, 2, 1)
+        self.dockPropertiesContent.layout().addWidget(self.selectionLabel, 0, 1)
+        self.dockPropertiesContent.layout().addWidget(self.propertyTableView, 2, 1)
 
         # Init selection containers
         self.clearSelections()
@@ -2554,7 +2536,7 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
             self.show()
 
         # Create tutorial manager
-        #self.tutorial_manager = TutorialManager(self)
+        self.tutorial_manager = TutorialManager(self)
 
         # Connect to Unity DBus signal (if linux)
         if sys.platform == "linux":
@@ -2572,8 +2554,12 @@ class MainWindow(QMainWindow, updates.UpdateWatcher):
         # Main window is initialized
         self.initialized = True
 
-        QTimer.singleShot(1000, self.openFile)
-        #self.timeline.openFile("/Users/admin/Downloads/project/TYMovieEditor/BLACKPINK_Kill_This_Love.mp4", 0);
+        QTimer.singleShot(1500, self.play)
 
-    def openFile(self):
+    def play(self):
         self.LoadFileSignal.emit("/Users/admin/Downloads/project/TYMovieEditor/BLACKPINK_Kill_This_Love.mp4")
+        self.SpeedSignal.emit(0)
+        self.PlayS.emit()
+
+        # Seek to frame
+        #self.SeekSignal.emit(frame_number)

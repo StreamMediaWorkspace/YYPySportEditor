@@ -1,7 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b959974-0162-4ae6-a8c3-4d6898aee621" name="Default Changelist" comment="" />
+    <list default="true" id="0b959974-0162-4ae6-a8c3-4d6898aee621" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/blur.blend" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blend/blur.blend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/defocus.blend" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/dissolve.blend" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blend/dissolve.blend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/earth.blend" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blend/earth.blend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/earth_real.blend" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/glare.blend" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blend/glare.blend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/glass_slider.blend" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blend/glass_slider.blend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/halo_zoom_out.blend" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/lens_flare.blend" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blend/lens_flare.blend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/magic_wand.blend" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blend/magic_wand.blend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/neon_curves.blend" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blend/neon_curves.blend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/picture_frames_4.blend" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blend/picture_frames_4.blend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/snow.blend" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blend/snow.blend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/spacemovie_intro.blend" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blend/spacemovie_intro.blend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/trees.blend" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blend/zoom_clapboard.blend" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blend/zoom_clapboard.blend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/blur.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/blur.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/defocus.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/dissolve.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/dissolve.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/earth/bump.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/earth/clouds.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/earth/color_map.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/earth/night_lights.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/earth/spec_mask.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/earth_real.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/glare.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/glare.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/glass_slider.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/glass_slider.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/halo_zoom_out.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/blinds.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/blinds.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/blur.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/blur.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/colors.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/colors.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/defocus.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/dissolve.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/dissolve.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/earth.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/earth.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/earth_real.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/explode.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/explode.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/fly_by_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/fly_by_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/fly_by_two_titles.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/fly_by_two_titles.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/glare.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/glare.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/glass_slider.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/glass_slider.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/halo_zoom_out.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/lens_flare.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/lens_flare.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/magic_wand.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/magic_wand.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/neon_curves.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/neon_curves.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/rotate_360.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/rotate_360.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/slide_left_to_right.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/slide_left_to_right.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/snow.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/snow.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/spacemovie_intro.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/spacemovie_intro.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/trees.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/wireframe_text.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/wireframe_text.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/icons/zoom_clapboard.png" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/icons/zoom_clapboard.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/lens_flare.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/lens_flare.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/magic_wand.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/magic_wand.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/neon_curves.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/neon_curves.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/blinds.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/blinds.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/blur.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/blur.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/colors.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/colors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/defocus.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/dissolve.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/dissolve.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/earth.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/earth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/earth_real.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/explode.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/explode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/fly_by_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/fly_by_1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/fly_by_two_titles.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/fly_by_two_titles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/glare.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/glare.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/glass_slider.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/glass_slider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/halo_zoom_out.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/lens_flare.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/lens_flare.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/magic_wand.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/magic_wand.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/neon_curves.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/neon_curves.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/picture_frames_4.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/picture_frames_4.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/rotate_360.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/rotate_360.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/slide_left_to_right.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/slide_left_to_right.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/snow.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/snow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/spacemovie_intro.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/spacemovie_intro.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/trees.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/wireframe_text.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/wireframe_text.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/scripts/zoom_clapboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/scripts/zoom_clapboard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/snow.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/snow.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/trees.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/blender/wireframe_text.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/blender/wireframe_text.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/classes/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/classes/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/effects/icons/color shift.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/launch.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/launch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/presets/format_webm_libvp9_lossless.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/presets/format_webm_libvp9_lossless.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/presets/instagram.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/presets/instagram.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/presets/twitter.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/presets/twitter.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/tests/query_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/tests/query_tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/timeline/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/timeline/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/timeline/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/timeline/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/timeline/js/controllers.js" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/timeline/js/controllers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/timeline/js/directives/playhead.js" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/timeline/js/directives/playhead.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/timeline/js/directives/ruler.js" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/timeline/js/directives/ruler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/timeline/js/directives/track.js" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/timeline/js/directives/track.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/timeline/js/functions.js" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/timeline/js/functions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/timeline/media/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/timeline/media/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/timeline/media/images/keyframe-point-vector.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/timeline/media/images/keyframes/point.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Bar_1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Bar_1.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Bar_2.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Bar_2.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Bar_3.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Bar_3.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Bubbles_1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Bubbles_1.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Bubbles_2.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Bubbles_2.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Cloud_1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Cloud_1.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Cloud_2.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Cloud_2.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Footer_1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Footer_1.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Footer_2.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Footer_2.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Footer_3.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Footer_3.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Gold_1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Gold_1.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Gold_2.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Gold_2.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Gold_Bottom.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Gold_Bottom.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Gold_Top.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Gold_Top.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Header_1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Header_1.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Header_2.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Header_2.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Header_3.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Header_3.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Oval_1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Oval_1.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Oval_2.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Oval_2.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Oval_3.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Oval_3.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Oval_4.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Oval_4.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Post_it.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Post_it.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Ribbon_1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Ribbon_1.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Ribbon_2.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Ribbon_2.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Ribbon_3.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Ribbon_3.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Standard_1.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Standard_1.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Standard_2.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Standard_2.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Standard_3.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Standard_3.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Standard_4.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Standard_4.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/titles/Sunset.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/titles/Sunset.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/transitions/common/circle_in_to_out.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/transitions/common/circle_in_to_out.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/transitions/common/circle_out_to_in.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/transitions/common/circle_out_to_in.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/transitions/common/fade.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/transitions/common/fade.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/transitions/common/wipe_bottom_to_top.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/transitions/common/wipe_bottom_to_top.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/transitions/common/wipe_left_to_right.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/transitions/common/wipe_left_to_right.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/transitions/common/wipe_right_to_left.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/transitions/common/wipe_right_to_left.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/transitions/common/wipe_top_to_bottom.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/transitions/common/wipe_top_to_bottom.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/windows/add_to_timeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/add_to_timeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/windows/main_window-bak.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/windows/main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/main_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/windows/preview_thread.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/preview_thread.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/windows/ui/main-window.ui" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/ui/main-window.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/windows/video_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/video_widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/windows/views/timeline_webview.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/views/timeline_webview.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/windows/views/tutorial.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/views/tutorial.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -51,7 +196,7 @@
       <option name="presentableId" value="Default" />
       <updated>1578750843939</updated>
       <workItem from="1578750850184" duration="16822000" />
-      <workItem from="1578815486208" duration="22000" />
+      <workItem from="1578815486208" duration="2445000" />
     </task>
     <servers />
   </component>
@@ -83,10 +228,10 @@
       <screen x="45" y="23" width="1395" height="877" />
     </state>
     <state x="261" y="80" key="SettingsEditor/45.23.1395.877@45.23.1395.877" timestamp="1578815507388" />
-    <state x="416" y="87" width="673" height="708" key="find.popup" timestamp="1578814405018">
+    <state x="416" y="87" width="673" height="708" key="find.popup" timestamp="1578816384385">
       <screen x="45" y="23" width="1395" height="877" />
     </state>
-    <state x="416" y="87" width="673" height="708" key="find.popup/45.23.1395.877@45.23.1395.877" timestamp="1578814405018" />
+    <state x="416" y="87" width="673" height="708" key="find.popup/45.23.1395.877@45.23.1395.877" timestamp="1578816384385" />
     <state x="417" y="203" width="670" height="676" key="search.everywhere.popup" timestamp="1578754661776">
       <screen x="45" y="23" width="1395" height="877" />
     </state>

@@ -330,10 +330,10 @@ class TutorialManager(object):
 
 
         # Connect to interface dock widgets
-        #self.win.dockFiles.visibilityChanged.connect(functools.partial(self.process, "dockFiles"))
-        #self.win.dockTransitions.visibilityChanged.connect(functools.partial(self.process, "dockTransitions"))
-        #self.win.dockEffects.visibilityChanged.connect(functools.partial(self.process, "dockEffects"))
-        #self.win.dockProperties.visibilityChanged.connect(functools.partial(self.process, "dockProperties"))
+        self.win.dockFiles.visibilityChanged.connect(functools.partial(self.process, "dockFiles"))
+        self.win.dockTransitions.visibilityChanged.connect(functools.partial(self.process, "dockTransitions"))
+        self.win.dockEffects.visibilityChanged.connect(functools.partial(self.process, "dockEffects"))
+        self.win.dockProperties.visibilityChanged.connect(functools.partial(self.process, "dockProperties"))
         self.win.dockVideo.visibilityChanged.connect(functools.partial(self.process, "dockVideo"))
 
         # Process tutorials (1 by 1)

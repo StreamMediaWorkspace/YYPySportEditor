@@ -2671,89 +2671,6 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
             # accept event
             event.accept()
 
-        # Add Clip
-        def addClip(self, data, position):
-
-            # Get app object
-            app = get_app()
-
-            # Search for matching file in project data (if any)
-            file_id = data[0]
-            file = File.get(id=file_id)
-
-            if not file:
-                # File not found, do nothing
-                return
-
-            if (file.data["media_type"] == "video" or file.data["media_type"] == "image"):
-                # Determine thumb path
-                thumb_path = os.path.join(info.THUMBNAIL_PATH, "%s.png" % file.data["id"])
-            else:
-                # Audio file
-                thumb_path = os.path.join(info.PATH, "images", "AudioThumbnail.png")
-
-            # Get file name
-            path, filename = os.path.split(file.data["path"])
-
-            # Convert path to the correct relative path (based on this folder)
-            file_path = file.absolute_path()
-
-            # Create clip object for this file
-            c = openshot.Clip(file_path)
-
-            # Append missing attributes to Clip JSON
-            new_clip = json.loads(c.Json())
-            new_clip["file_id"] = file.id
-            new_clip["title"] = filename
-            new_clip["image"] = thumb_path
-
-            # Skip any clips that are missing a 'reader' attribute
-            # TODO: Determine why this even happens, as it shouldn't be possible
-            if not new_clip.get("reader"):
-                return  # Do nothing
-
-            # Check for optional start and end attributes
-            start_frame = 1
-            end_frame = new_clip["reader"]["duration"]
-            if 'start' in file.data.keys():
-                new_clip["start"] = file.data['start']
-            if 'end' in file.data.keys():
-                new_clip["end"] = file.data['end']
-
-            # Find the closest track (from javascript)
-            top_layer = int(self.eval_js(JS_SCOPE_SELECTOR + ".GetJavaScriptTrack(" + str(position.y()) + ");"))
-            new_clip["layer"] = top_layer
-
-            # Find position from javascript
-            js_position = self.eval_js(JS_SCOPE_SELECTOR + ".GetJavaScriptPosition(" + str(position.x()) + ");")
-            new_clip["position"] = js_position
-
-            # Adjust clip duration, start, and end
-            new_clip["duration"] = new_clip["reader"]["duration"]
-            if file.data["media_type"] == "image":
-                new_clip["end"] = self.settings_obj.get("default-image-length")  # default to 8 seconds
-
-            # Overwrite frame rate (incase the user changed it in the File Properties)
-            file_properties_fps = float(file.data["fps"]["num"]) / float(file.data["fps"]["den"])
-            file_fps = float(new_clip["reader"]["fps"]["num"]) / float(new_clip["reader"]["fps"]["den"])
-            fps_diff = file_fps / file_properties_fps
-            new_clip["reader"]["fps"]["num"] = file.data["fps"]["num"]
-            new_clip["reader"]["fps"]["den"] = file.data["fps"]["den"]
-            # Scale duration / length / and end properties
-            new_clip["reader"]["duration"] *= fps_diff
-            new_clip["end"] *= fps_diff
-            new_clip["duration"] *= fps_diff
-
-            # Add clip to timeline
-            self.update_clip_data(new_clip, only_basic_props=False)
-
-            # temp hold item_id
-            self.item_id = new_clip.get('id')
-
-            # Init javascript bounding box (for snapping support)
-            code = JS_SCOPE_SELECTOR + ".StartManualMove('" + self.item_type + "', '" + self.item_id + "');"
-            self.eval_js(code)
-
     # Add Clip
     def addClip(self, data, position):
 
@@ -3020,7 +2937,6 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
         self.page().mainFrame().evaluateJavaScript(cmd)
 
     def render_cache_json(self):
-        return
         """Render the cached frames to the timeline (called every X seconds), and only if changed"""
 
         # Get final cache object from timeline
@@ -3098,49 +3014,3 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
 
         # Delay the start of cache rendering
         QTimer.singleShot(1500, self.cache_renderer.start)
-
-
-    # Add Clip
-    def openFile(self, fileName, position):
-        # Create clip object for this file
-        c = openshot.Clip(fileName)
-
-        # Append missing attributes to Clip JSON
-        new_clip = json.loads(c.Json())
-
-        # Skip any clips that are missing a 'reader' attribute
-        # TODO: Determine why this even happens, as it shouldn't be possible
-        if not new_clip.get("reader"):
-            return  # Do nothing
-
-        # Find the closest track (from javascript)
-        top_layer = 0#int(self.eval_js(JS_SCOPE_SELECTOR + ".GetJavaScriptTrack('0');"))
-        new_clip["layer"] = top_layer
-
-        # Find position from javascript
-        js_position = 0#self.eval_js(JS_SCOPE_SELECTOR + ".GetJavaScriptPosition('0');")
-        new_clip["position"] = js_position
-
-        # Adjust clip duration, start, and end
-        new_clip["duration"] = 100000
-
-        # Overwrite frame rate (incase the user changed it in the File Properties)
-        file_properties_fps = float(16) / float(9)
-        file_fps = float(16) / float(9)
-        fps_diff = file_fps / file_properties_fps
-        new_clip["reader"]["fps"]["num"] = 16
-        new_clip["reader"]["fps"]["den"] = 9
-        # Scale duration / length / and end properties
-        new_clip["reader"]["duration"] *= fps_diff
-        new_clip["end"] *= fps_diff
-        new_clip["duration"] *= fps_diff
-
-        # Add clip to timeline
-        self.update_clip_data(new_clip, only_basic_props=False)
-
-        # temp hold item_id
-        self.item_id = new_clip.get('id')
-
-        # Init javascript bounding box (for snapping support)
-        code = JS_SCOPE_SELECTOR + ".StartManualMove('" + self.item_type + "', '" + self.item_id + "');"
-        self.eval_js(code)

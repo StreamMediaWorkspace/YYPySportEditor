@@ -41,7 +41,7 @@ from classes.logger import log
 from classes import info, settings, project_data, updates, language, ui_util, logger_libopenshot
 import openshot
 
-from PyQt5.QtCore import *
+from PyQt5.QtCore import QTimer, Qt
 
 try:
     # Enable High-DPI resolutions
@@ -53,7 +53,6 @@ except AttributeError:
 def get_app():
     """ Returns the current QApplication instance of OpenShot """
     return QApplication.instance()
-
 
 class OpenShotApp(QApplication):
     """ This class is the primary QApplication for OpenShot.
@@ -156,6 +155,7 @@ class OpenShotApp(QApplication):
             self.setPalette(darkPalette)
             self.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 0px solid white; }")
 
+        '''
         # Create main window
         from windows.main_window import MainWindow
         self.window = MainWindow(mode)
@@ -177,16 +177,15 @@ class OpenShotApp(QApplication):
             # Recover backup file (this can't happen until after the Main Window has completely loaded)
             self.window.RecoverBackup.emit()
 
-        #self.window.hide()
+        '''
 
         from windows.Player import Player
         self.player = Player()
         self.player.show()
-        #self.player.open("/Users/admin/Downloads/project/TYMovieEditor/BLACKPINK_Kill_This_Love.mp4")
-        #self.player.play()
+        # self.player.open("/Users/admin/Downloads/project/TYMovieEditor/BLACKPINK_Kill_This_Love.mp4")
+        # self.player.play()
 
         QTimer.singleShot(500, self.paly)
-
 
     def paly(self):
         self.player.open("/Users/admin/Downloads/project/TYMovieEditor/BLACKPINK_Kill_This_Love.mp4")

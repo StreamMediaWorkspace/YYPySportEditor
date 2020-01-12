@@ -59,6 +59,10 @@ class PreviewParent(QObject):
     def onModeChanged(self, current_mode):
         log.info('onModeChanged')
 
+
+
+
+
     def MInit(self, parent, video_widget):
         # Important vars
         self.parent = parent
@@ -89,6 +93,8 @@ class PreviewParent(QObject):
         # Move Worker to new thread, and Start
         self.worker.moveToThread(self.background)
         self.background.start()
+
+
 
 
     @pyqtSlot(object, object)
@@ -167,7 +173,7 @@ class PlayerWorker(QObject):
         # Create an instance of a libopenshot Timeline object
         # self.clip_reader = openshot.Timeline(width, height, openshot.Fraction(fps["num"], fps["den"]), sample_rate, channels, channel_layout)
         timeline = openshot.Timeline(width, height, openshot.Fraction(16, 9), sample_rate,
-                                             channels, channel_layout)
+                                     channels, channel_layout)
 
         timeline.info.channel_layout = channel_layout
         timeline.info.has_audio = True
@@ -321,10 +327,7 @@ class PlayerWorker(QObject):
             channel_layout = project.get(["channel_layout"])
 
             # Create an instance of a libopenshot Timeline object
-            #self.clip_reader = openshot.Timeline(width, height, openshot.Fraction(fps["num"], fps["den"]), sample_rate, channels, channel_layout)
-            self.clip_reader = openshot.Timeline(width, height, openshot.Fraction(16, 9), sample_rate,
-                                                 channels, channel_layout)
-
+            self.clip_reader = openshot.Timeline(width, height, openshot.Fraction(fps["num"], fps["den"]), sample_rate, channels, channel_layout)
             self.clip_reader.info.channel_layout = channel_layout
             self.clip_reader.info.has_audio = True
             self.clip_reader.info.has_video = True
@@ -368,13 +371,10 @@ class PlayerWorker(QObject):
 
         # Set length of timeline in frames
         self.timeline_length = timeline_length
-        print("start paly function")
+
         # Start playback
         if self.parent.initialized:
             self.player.Play()
-            print("start play")
-        else:
-            print("!!!!not play")
 
     def Pause(self):
         """ Pause the video player """
