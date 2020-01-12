@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0b959974-0162-4ae6-a8c3-4d6898aee621" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ProjectId" id="1WFgdV8qko0Npzdd1RvkWmDNRXb" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Resources/windows" />
+    <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Resources/windows" />
+    </key>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0b959974-0162-4ae6-a8c3-4d6898aee621" name="Default Changelist" comment="" />
+      <created>1578750843939</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1578750843939</updated>
+      <workItem from="1578750850184" duration="16822000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="481" y="207" key="#com.intellij.tools.ToolEditorDialog" timestamp="1578751261273">
+      <screen x="45" y="23" width="1395" height="877" />
+    </state>
+    <state x="481" y="207" key="#com.intellij.tools.ToolEditorDialog/45.23.1395.877@45.23.1395.877" timestamp="1578751261273" />
+    <state width="1333" height="217" key="GridCell.Tab.0.bottom" timestamp="1578815196899">
+      <screen x="45" y="23" width="1395" height="877" />
+    </state>
+    <state width="1333" height="217" key="GridCell.Tab.0.bottom/45.23.1395.877@45.23.1395.877" timestamp="1578815196899" />
+    <state width="1333" height="217" key="GridCell.Tab.0.center" timestamp="1578815196898">
+      <screen x="45" y="23" width="1395" height="877" />
+    </state>
+    <state width="1333" height="217" key="GridCell.Tab.0.center/45.23.1395.877@45.23.1395.877" timestamp="1578815196898" />
+    <state width="1333" height="217" key="GridCell.Tab.0.left" timestamp="1578815196897">
+      <screen x="45" y="23" width="1395" height="877" />
+    </state>
+    <state width="1333" height="217" key="GridCell.Tab.0.left/45.23.1395.877@45.23.1395.877" timestamp="1578815196897" />
+    <state width="1333" height="217" key="GridCell.Tab.0.right" timestamp="1578815196898">
+      <screen x="45" y="23" width="1395" height="877" />
+    </state>
+    <state width="1333" height="217" key="GridCell.Tab.0.right/45.23.1395.877@45.23.1395.877" timestamp="1578815196898" />
+    <state x="261" y="80" key="SettingsEditor" timestamp="1578751262469">
+      <screen x="45" y="23" width="1395" height="877" />
+    </state>
+    <state x="261" y="80" key="SettingsEditor/45.23.1395.877@45.23.1395.877" timestamp="1578751262469" />
+    <state x="416" y="87" width="673" height="708" key="find.popup" timestamp="1578814405018">
+      <screen x="45" y="23" width="1395" height="877" />
+    </state>
+    <state x="416" y="87" width="673" height="708" key="find.popup/45.23.1395.877@45.23.1395.877" timestamp="1578814405018" />
+    <state x="417" y="203" width="670" height="676" key="search.everywhere.popup" timestamp="1578754661776">
+      <screen x="45" y="23" width="1395" height="877" />
+    </state>
+    <state x="417" y="203" width="670" height="676" key="search.everywhere.popup/45.23.1395.877@45.23.1395.877" timestamp="1578754661776" />
+  </component>
+</project>
