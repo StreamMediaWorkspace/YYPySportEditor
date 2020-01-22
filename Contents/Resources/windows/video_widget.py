@@ -599,7 +599,7 @@ class VideoWidget(QWidget):
         self.current_image = None
 
         # Get a reference to the window object
-        #self.win = get_app().window
+        self.win = get_app().window
 
         # Show Property timer
         # Timer to use a delay before sending MaxSizeChanged signals (so we don't spam libopenshot)

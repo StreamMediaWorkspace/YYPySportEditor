@@ -27,9 +27,19 @@
  */
 
 
+/*App.controller('TrackContainer',function($scope) {
+	if (!$scope.selected) {alert("dededed");
+		$scope.selected = true;
+		$scope.color="gary";
+	} else {
+		$scope.selected = false;
+		$scope.color="red";
+	}
+});*/
+
 // Treats element as a track
 // 1: allows clips, transitions, and effects to be dropped
-App.directive('tlTrack', function($timeout) {
+/*App.directive('tlTrack', function($timeout) {
     return {
         // A = attribute, E = Element, C = Class and M = HTML Comment
         restrict:'A',
@@ -92,11 +102,11 @@ App.directive('tlTrack', function($timeout) {
 						item_type = null;
 						if (item.hasClass('clip'))
 							item_type = 'clip';
-						else if(item.hasClass('transition'))
-							item_type = 'transition';
-						else
+						else {
+							alert("------", item);
 							// Unknown drop type
 							return;
+						}
 
 		       			// get the item properties we need
 		       			item_id = item.attr("id");
@@ -179,4 +189,4 @@ App.directive('tlTrack', function($timeout) {
 		    });
     	}    
     };
-});
+});*/

@@ -236,11 +236,6 @@ function setBoundingBox(scope, item){
             bounding_box.selected_ids[scope.project.clips[clip_index].id] = true;
         }
     }
-    for (var effect_index = 0; effect_index < scope.project.effects.length; effect_index++) {
-        if (scope.project.effects[effect_index].selected) {
-            bounding_box.selected_ids[scope.project.effects[effect_index].id] = true;
-        }
-    }
 }
 
 // Move bounding box (apply snapping and constraints)

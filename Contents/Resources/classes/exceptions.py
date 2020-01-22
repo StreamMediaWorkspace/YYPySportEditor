@@ -27,7 +27,7 @@
 
 import traceback
 from classes.logger import log
-from classes.metrics import track_exception_stacktrace
+#from classes.metrics import track_exception_stacktrace
 
 
 def ExceptionHandler(exeception_type, exeception_value, exeception_traceback):
@@ -38,4 +38,5 @@ def ExceptionHandler(exeception_type, exeception_value, exeception_traceback):
     stacktrace = "Python %s" % "".join(traceback.format_exception(exeception_type, exeception_value, exeception_traceback))
 
     # Report traceback to webservice (if enabled)
-    track_exception_stacktrace(stacktrace, "openshot-qt")
+    #track_exception_stacktrace(stacktrace, "openshot-qt")
+

@@ -832,7 +832,23 @@
     "title": "Add Track",
     "restart": true,
     "setting": "actionAddTrack",
-    "value": "Ctrl+Shift+T",
+    "value": "Meta+Shift+T",
+    "type": "text"
+  },
+   {
+    "category": "Keyboard",
+    "title": "Cut",
+    "restart": true,
+    "setting": "actionCut+Meta+Shift+C",
+    "value": "#fff000",
+    "type": "text"
+  },
+   {
+    "category": "Keyboard",
+    "title": "Cut",
+    "restart": true,
+    "setting": "actionCut+Meta+Shift+D",
+    "value": "#00ff00",
     "type": "text"
   },
   {

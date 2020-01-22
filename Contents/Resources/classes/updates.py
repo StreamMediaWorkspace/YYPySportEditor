@@ -286,7 +286,6 @@ class UpdateManager:
     # Carry out an action on all listeners
     def dispatch_action(self, action):
         """ Distribute changes to all listeners (by calling their changed() method) """
-
         try:
             # Loop through all listeners
             for listener in self.updateListeners:

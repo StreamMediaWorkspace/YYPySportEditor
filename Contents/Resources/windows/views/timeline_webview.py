@@ -160,6 +160,7 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
 
     # Path to html file
     html_path = os.path.join(info.PATH, 'timeline', 'index.html')
+    last_file_end = 0.0
 
     @pyqtSlot()
     def page_ready(self):
@@ -245,13 +246,14 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
         if ignore_reader and "reader" in existing_clip.data:
             existing_clip.data.pop("reader")
 
+        print("existing_clip====:", existing_clip)
         # Save clip
         existing_clip.save()
 
         # Update the preview and reselect current frame in properties
         if not ignore_refresh:
             get_app().window.refreshFrameSignal.emit()
-            get_app().window.propertyTableView.select_frame(self.window.preview_thread.player.Position())
+            #get_app().window.propertyTableView.select_frame(self.window.preview_thread.player.Position())
 
     # Update Thumbnails for modified clips
     def UpdateClipThumbnail(self, clip_data):
@@ -932,6 +934,7 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
         get_app().restoreOverrideCursor()
 
         # Start timer to redraw audio
+        self.redraw_audio_timer.start()
         self.redraw_audio_timer.start()
 
     def Thumbnail_Updated(self, clip_id):
@@ -2525,8 +2528,8 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
         # Seek to frame
         self.window.SeekSignal.emit(frame_number)
 
-    @pyqtSlot(float, int, str)
-    def PlayheadMoved(self, position_seconds, position_frames, time_code):
+    @pyqtSlot(int)
+    def PlayheadMoved(self, position_frames):
 
         # Load the timeline into the Player (ignored if this has already happened)
         self.window.LoadFileSignal.emit('')
@@ -2536,7 +2539,7 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
             self.last_position_frames = position_frames
 
             # Notify main window of current frame
-            self.window.previewFrame(position_seconds, position_frames, time_code)
+            self.window.previewFrame(position_frames)
 
     @pyqtSlot(int)
     def movePlayhead(self, position_frames):
@@ -2753,6 +2756,112 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
         # Init javascript bounding box (for snapping support)
         code = JS_SCOPE_SELECTOR + ".StartManualMove('" + self.item_type + "', '" + self.item_id + "');"
         self.eval_js(code)
+
+    # Add Clip yanght added
+    def addNewClip(self, file):
+        # Get app object
+        app = get_app()
+
+        if not file:
+            # File not found, do nothing
+            return
+
+        self.item_type = "clip"
+
+        #if (file.data["media_type"] == "video" or file.data["media_type"] == "image"):
+            # Determine thumb path
+         #   thumb_path = os.path.join(info.THUMBNAIL_PATH, "%s.png" % file.data["id"])
+        #else:
+            # Audio file
+        #    thumb_path = os.path.join(info.PATH, "images", "AudioThumbnail.png")
+
+        # Get file name
+        #path, filename = os.path.split(file.data["path"])
+
+        # Convert path to the correct relative path (based on this folder)
+        file_path = file.absolute_path()
+
+        # Create clip object for this file
+        c = openshot.Clip(file_path)
+
+        # Append missing attributes to Clip JSON
+        new_clip = json.loads(c.Json())
+        new_clip["file_id"] = file.id
+        new_clip["title"] = ""#filename
+        new_clip["image"] = ""#thumb_path
+
+        # Skip any clips that are missing a 'reader' attribute
+        # TODO: Determine why this even happens, as it shouldn't be possible
+        if not new_clip.get("reader"):
+            return  # Do nothing
+
+        # Check for optional start and end attributes
+        start_frame = 1
+        end_frame = new_clip["reader"]["duration"]
+        if 'start' in file.data.keys():
+            new_clip["start"] = file.data['start']
+        if 'end' in file.data.keys():
+            new_clip["end"] = self.last_file_end + file.data['end']
+
+        #new_clip["Position"] = self.last_file_end
+        
+        #print("---------last_file_end:", self.last_file_end);
+
+
+        # Find the closest track (from javascript)
+        #top_layer = int(self.eval_js(JS_SCOPE_SELECTOR + ".GetJavaScriptTrack(" + str(position.y()) + ");"))
+        #top_layer = int(self.eval_js(JS_SCOPE_SELECTOR + ".GetJavaScriptTrack(" + str(0) + ");"))
+
+        new_clip["layer"] = 0#top_layer    ???????
+
+        # Find position from javascript
+        #js_position = self.eval_js(JS_SCOPE_SELECTOR + ".GetJavaScriptPosition(" + str(self.last_file_end) + ");")
+        #js_position = self.eval_js(JS_SCOPE_SELECTOR + ".GetJavaScriptPosition(" + str(position.x()) + ");")
+        #new_clip["position"] = self.last_file_end#js_position
+
+        #print("js_position======", JS_SCOPE_SELECTOR + ".GetJavaScriptPosition(" + str(self.last_file_end) + ");")
+
+        # Adjust clip duration, start, and end
+        new_clip["duration"] = new_clip["reader"]["duration"]
+        if file.data["media_type"] == "image":
+            new_clip["end"] = self.settings_obj.get("default-image-length")  # default to 8 seconds
+
+        # Overwrite frame rate (incase the user changed it in the File Properties)
+        file_properties_fps = float(file.data["fps"]["num"]) / float(file.data["fps"]["den"])
+        file_fps = float(new_clip["reader"]["fps"]["num"]) / float(new_clip["reader"]["fps"]["den"])
+        fps_diff = file_fps / file_properties_fps
+        new_clip["reader"]["fps"]["num"] = file.data["fps"]["num"]
+        new_clip["reader"]["fps"]["den"] = file.data["fps"]["den"]
+        # Scale duration / length / and end properties
+        new_clip["reader"]["duration"] *= fps_diff
+        new_clip["end"] *= fps_diff
+        new_clip["duration"] *= fps_diff
+
+        new_clip["Position"] = self.last_file_end
+        print("---------last_file_end:", self.last_file_end)
+        self.last_file_end = new_clip["end"]
+
+        # Add clip to timeline
+        self.update_clip_data(new_clip, only_basic_props=False)
+
+        # temp hold item_id
+        self.item_id = new_clip.get('id')
+
+        # Init javascript bounding box (for snapping support)
+        code = JS_SCOPE_SELECTOR + ".StartManualMove('" + self.item_type + "', '" + self.item_id + "');"
+        self.eval_js(code)
+
+    def actionAddTrack_trigger(self, event):
+        log.info("actionAddTrack_trigger")
+
+        # Get # of tracks
+        all_tracks = get_app().project.get(["layers"])
+        track_number = list(reversed(sorted(all_tracks, key=itemgetter('number'))))[0].get("number") + 1000000
+
+        # Create new track above existing layer(s)
+        track = Track()
+        track.data = {"number": track_number, "y": 0, "label": "", "lock": False}
+        track.save()
 
     # Resize timeline
     @pyqtSlot(float)
@@ -2974,8 +3083,25 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
         # Add self as listener to project data updates (used to update the timeline)
         get_app().updates.add_listener(self)
 
+        '''
+        from PyQt5.Qt import QMessageBox
+        from PyQt5.QtNetwork import QNetworkDiskCache
+        from PyQt5.QtWebKitWidgets import QWebPage, QWebInspector
+        from PyQt5.QtWebKit import QWebSettings
+
+        inspector = QWebInspector()
+
+        self.page().settings().setAttribute(
+            QWebSettings.DeveloperExtrasEnabled, True
+        )
+        inspector.setPage(self.page())
+        inspector.showMaximized()
+        '''
+
         # set url from configuration (QUrl takes absolute paths for file system paths, create from QFileInfo)
         self.setUrl(QUrl.fromLocalFile(QFileInfo(self.html_path).absoluteFilePath()))
+        
+        print("load url:", self.html_path)
 
         # Connect signal of javascript initialization to our javascript reference init function
         self.page().mainFrame().javaScriptWindowObjectCleared.connect(self.setup_js_data)
@@ -2990,7 +3116,7 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
         self.waveform_cache = {}
 
         # Connect update thumbnail signal
-        get_app().window.ThumbnailUpdated.connect(self.Thumbnail_Updated)
+        #get_app().window.ThumbnailUpdated.connect(self.Thumbnail_Updated)
 
         # Copy clipboard
         self.copy_clipboard = {}

@@ -76,7 +76,7 @@ class OpenShotApp(QApplication):
             pass
 
         # Setup application
-        self.setApplicationName('openshot')
+        self.setApplicationName('YYSportCoder')
         self.setApplicationVersion(info.SETUP['version'])
 
         # Init settings
@@ -94,7 +94,7 @@ class OpenShotApp(QApplication):
         _ = self._tr
         libopenshot_version = openshot.GetVersion().ToString()
         if mode != "unittest" and libopenshot_version < info.MINIMUM_LIBOPENSHOT_VERSION:
-            QMessageBox.warning(None, _("Wrong Version of libopenshot Detected"),
+            QMessageBox.warning(None, _("Wrong Version of YYSportCoder Detected"),
                                       _("<b>Version %(minimum_version)s is required</b>, but %(current_version)s was detected. Please update libopenshot or download our latest installer.") %
                                 {"minimum_version": info.MINIMUM_LIBOPENSHOT_VERSION, "current_version": libopenshot_version})
             # Stop launching and exit
@@ -179,13 +179,15 @@ class OpenShotApp(QApplication):
 
         '''
 
-        from windows.Player import Player
-        self.player = Player()
-        self.player.show()
+        from windows.yy_main_window import YYMainWindow
+        self.window = YYMainWindow(mode)
+        #from windows.VideoPlayerWindow import VideoPlayerWindow
+        #self.player = VideoPlayerWindow()
+        #self.player.show()
         # self.player.open("/Users/admin/Downloads/project/TYMovieEditor/BLACKPINK_Kill_This_Love.mp4")
         # self.player.play()
 
-        QTimer.singleShot(500, self.paly)
+        #QTimer.singleShot(500, self.paly)
 
     def paly(self):
         self.player.open("/Users/admin/Downloads/project/TYMovieEditor/BLACKPINK_Kill_This_Love.mp4")

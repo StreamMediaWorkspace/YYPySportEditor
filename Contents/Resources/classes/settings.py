@@ -93,6 +93,8 @@ class SettingStore(JsonDataStore):
 
             # Will raise exception to caller on failure to read
             try:
+                log.info("user settings %s", file_path)
+                print("------", file_path)
                 user_settings = self.read_from_file(file_path)
             except Exception as ex:
                 log.error("Error loading settings file: %s" % ex)

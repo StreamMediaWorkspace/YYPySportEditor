@@ -29,7 +29,6 @@
 
 // Initialize the main controller module
 App.controller('TimelineCtrl',function($scope) {
-
 	// DEMO DATA (used when debugging outside of Qt using Chrome)
 	$scope.project = {
 		fps: {
@@ -146,7 +145,7 @@ App.controller('TimelineCtrl',function($scope) {
 				// 	 volume: { Points: [] }
 	          //      },
              // ],
-  		effects : [],
+  		//effects : [],
 		  		// [
 	               //  	{
 	   	        //          id : '5',
@@ -173,13 +172,31 @@ App.controller('TimelineCtrl',function($scope) {
 		           //       end : 30
 	               //  	}
                    //
-                   //  ],
+				   //  ],
+		cuts: [
+			//{id:'0', layer : 0, color: '#fff000', start: 0, duration: 16.0, end: 16.0, shortCut: 'ctl+x'}, 
+			//{id:'1', layer : '1', color: '#000fff', start: 20, duration: 100, shortCut: 'ctl+x'},
+		],
 	  	layers : [
-  				{id: 'L0', number:0, y:0, label: '', lock: false},
-				{id: 'L1', number:1, y:0, label: '', lock: false},
-				{id: 'L2', number:2, y:0, label: '', lock: false},
-				{id: 'L3', number:3, y:0, label: '', lock: false},
-				{id: 'L4', number:4, y:0, label: '', lock: false}
+			{
+				id: '0', 
+				number:0, 
+				y: 0, 
+				label: '', 
+				lock: false, 
+				name: "test0"
+			},{
+				id: '1', 
+				number:0, 
+				y: 0, 
+				label: '', 
+				lock: false, 
+				name: "test0"
+			},
+				//{id: 'L1', number:1, y:0, label: '', lock: false},
+				//{id: 'L2', number:2, y:0, label: '', lock: false},
+				//{id: 'L3', number:3, y:0, label: '', lock: false},
+				//{id: 'L4', number:4, y:0, label: '', lock: false}
              ],
 	  	markers : [],
               // [
@@ -261,11 +278,62 @@ App.controller('TimelineCtrl',function($scope) {
 	  $scope.project.playhead_position = position_seconds;
 	  $scope.playheadTime = secondsToTime(position_seconds, $scope.project.fps.num, $scope.project.fps.den);
 
+	  var playHeadPosition = ($scope.project.playhead_position * $scope.pixelsPerSecond) + $scope.playheadOffset;
 	  // Use JQuery to move playhead (for performance reasons) - scope.apply is too expensive here
-	  $(".playhead-top").css("left", (($scope.project.playhead_position * $scope.pixelsPerSecond) + $scope.playheadOffset) + "px");
-	  $(".playhead-line").css("left", (($scope.project.playhead_position * $scope.pixelsPerSecond) + $scope.playheadOffset) + "px");
+	  $(".playhead-top").css("left", playHeadPosition + "px");
+	  $(".playhead-line").css("left", playHeadPosition + "px");
 	  $("#ruler_time").text($scope.playheadTime.hour + ":" + $scope.playheadTime.min + ":" + $scope.playheadTime.sec + ":" + $scope.playheadTime.frame);
-  };
+	};
+
+   $scope.MoveCuts = function(current_frame) {
+	    var scope = $scope;
+	    for (var i=0; scope.project.cuts && i<scope.project.cuts.length; i++) {
+			var cut = scope.project.cuts[i];
+			if (cut) {
+				if (cut.end == -1) {
+				    cut.duration = current_frame - cut.start;
+				} else {
+					cut.duration = cut.end - cut.start;
+				}
+			}
+		}
+		scope.$apply();
+	};
+	
+	 // Change the razor mode
+	 /*$scope.Cut = function(key, position_seconds, color) {
+		$scope.$apply(function(){
+			position_seconds = parseFloat(position_seconds)
+			var scope = $scope;
+			var find = false;
+			for(var i=0; scope.project.cuts && i<scope.project.cuts.length; i++) {
+				var cut = scope.project.cuts[i];
+				if (cut && key === cut.shortCut && !cut.end) {
+					cut.duration = position_seconds - cut.start;
+					cut.end = position_seconds;
+					find = true;
+				}
+			}
+
+			if (!find) {
+				id = scope.project.cuts.length;
+				scope.project.cuts.push({//todo selected items
+					id: id.toString(),
+					layer: 0, 
+					color: color, 
+					start: position_seconds,
+					duration: 0.0, 
+					shortCut: key
+				});
+			}
+		});
+   };*/
+
+	$scope.GetPositionByFrame = function(position_frames) {
+		// Determine seconds
+		var frames_per_second = $scope.project.fps.num / $scope.project.fps.den;
+		return ($scope.pixelsPerSecond*(position_frames - 1) / frames_per_second);
+	}
 
   // Move the playhead to a specific frame
   $scope.MovePlayheadToFrame = function(position_frames) {
@@ -285,6 +353,7 @@ App.controller('TimelineCtrl',function($scope) {
       
 	  // Update internal scope (in seconds)
 	  $scope.MovePlayhead(position_seconds);
+	  $scope.MoveCuts(position_frames);
   };
 
   // Move the playhead to a specific time
@@ -900,10 +969,8 @@ $scope.SetTrackLabel = function (label) {
 	if (item_type == 'clip') {
 		item_object = findElement($scope.project.clips, "id", item_id);
 	}
-	else if (item_type == 'transition') {
-		item_object = findElement($scope.project.effects, "id", item_id);
-	}
 	else {
+		alert("item_type="+item_type);
 		// Bail out if no id found
 		return;
 	}
@@ -923,8 +990,8 @@ $scope.SetTrackLabel = function (label) {
 	if (item_type == 'clip') {
 		timeline.update_clip_data(JSON.stringify(item_object), true, true, false);
 	}
-	else if (item_type == 'transition') {
-		timeline.update_transition_data(JSON.stringify(item_object), true, false);
+	else {
+		alert("item_type ="+item_type);
 	}
 
 	// Resize timeline if it's too small to contain all clips
@@ -952,8 +1019,8 @@ $scope.SetTrackLabel = function (label) {
 		 if (item_type == 'clip') {
 			 $scope.SelectClip(item_id, true);
 		 }
-		 else if (item_type == 'transition') {
-			 $scope.SelectTransition(item_id, true);
+		 else {
+			 alert("type:"+item_type);
 		 }
 	 });
 
@@ -1050,6 +1117,7 @@ $scope.SetTrackLabel = function (label) {
  // Update X,Y indexes of tracks / layers (anytime the project.layers scope changes)
  $scope.UpdateLayerIndex = function(){
 
+	timeline.qt_log(JSON.stringify($scope.project));
 	 if ($scope.Qt) {
 		 timeline.qt_log('UpdateLayerIndex');
 	 }
@@ -1458,7 +1526,7 @@ $scope.SetTrackLabel = function (label) {
             $scope.SortItems();
 
             // Re-index Layer Y values
-            $scope.UpdateLayerIndex();
+			$scope.UpdateLayerIndex();
         }
 		$scope.$digest();
 	}
@@ -1489,11 +1557,21 @@ $scope.SetTrackLabel = function (label) {
 	 }, 'slow');
 
 	 // Update playhead position and time readout
-	 $scope.MovePlayhead($scope.project.playhead_position)
+	 $scope.MovePlayhead($scope.project.playhead_position);
 
 	 // return true
 	 return true;
  };
+
+ $scope.TrackSelected = function() {
+	if (!this.selected) {
+	    this.selected = true;
+		this.color = "gary";
+	} else {
+		this.selected = false;
+		this.color = "red";
+	}
+};
 
 // ############# END QT FUNCTIONS #################### //
 
@@ -1569,4 +1647,23 @@ $scope.SetTrackLabel = function (label) {
         $scope.startImage = "";
   };
 
+  $scope.addCut = function(layerID, key, duration, color) {
+	$scope.Cut(key, duration, color);
+	id = $scope.project.layers[0].cuts.length;
+	  	
+	$scope.project.layers[0].cuts.push({
+		id: id.toString(), 
+		layer: layerID,
+		color: color, 
+		start: parseFloat(startPos), 
+		duration: parseFloat(duration), 
+		shortCut: 'ctl+x'
+	});
+  }
+
+  $scope.changeCutDuration = function(key, duration) { 
+	id = parseInt(strId);
+	$scope.project.cuts[id].duration = parseInt(duration);
+	//$scope.Cut(key, duration, "#fff000");
+  }
 });
