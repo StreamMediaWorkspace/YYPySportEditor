@@ -174,7 +174,7 @@ App.controller('TimelineCtrl',function($scope) {
                    //
 				   //  ],
 		cuts: [
-			//{id:'0', layer : 0, color: '#fff000', start: 0, duration: 16.0, end: 16.0, shortCut: 'ctl+x'}, 
+			{id:'0', layer : 0, color: '#fff000', start: 100, duration: 400.0, end: 500.0, shortCut: 'ctl+x'}, 
 			//{id:'1', layer : '1', color: '#000fff', start: 20, duration: 100, shortCut: 'ctl+x'},
 		],
 	  	layers : [
@@ -908,6 +908,14 @@ $scope.ShowTimelineMenu = function(e, layer_number) {
  	if ($scope.Qt && !$scope.enable_razor) {
 	 	timeline.ShowTimelineMenu($scope.GetJavaScriptPosition(e.pageX), layer_number);
 	 }
+};
+
+$scope.PlayCut = function(e, cut) {
+	console.log("PlayCuts", cut);
+	if ($scope.Qt && !$scope.enable_razor) {
+		var cuts_json = '[' + JSON.stringify(cut) + ']'
+		timeline.PlayCuts(cuts_json);
+	}
 };
 
  // Get the name of the track

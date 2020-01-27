@@ -795,6 +795,7 @@ class YYMainWindow(QMainWindow, updates.UpdateWatcher):
             ui_util.setup_icon(self, self.actionPlay, "actionPlay")  # to default
             self.PauseSignal.emit()
 
+
     def actionAddTrack_trigger(self, event):
         log.info("actionAddTrack_trigger")
 

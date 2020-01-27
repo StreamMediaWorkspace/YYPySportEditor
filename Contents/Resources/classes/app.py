@@ -179,8 +179,12 @@ class OpenShotApp(QApplication):
 
         '''
 
-        from windows.yy_main_window import YYMainWindow
-        self.window = YYMainWindow(mode)
+        #from windows.yy_main_window import YYMainWindow
+        #self.window = YYMainWindow(mode)
+
+        from windows.yymain_window import YYMainWindow
+        self.window = YYMainWindow()
+
         #from windows.VideoPlayerWindow import VideoPlayerWindow
         #self.player = VideoPlayerWindow()
         #self.player.show()

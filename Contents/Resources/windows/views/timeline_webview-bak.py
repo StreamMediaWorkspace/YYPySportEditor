@@ -49,8 +49,6 @@ from classes.query import File, Clip, Transition, Track
 from classes.waveform import get_audio_data
 from classes.thumbnail import GenerateThumbnail
 from classes.conversion import zoomToSeconds, secondsToZoom
-from PyQt5.QtCore import *
-
 
 try:
     import json
@@ -163,8 +161,6 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
     # Path to html file
     html_path = os.path.join(info.PATH, 'timeline', 'index.html')
     last_file_end = 0.0
-
-    PlayCutsSignal = pyqtSignal(str)
 
     @pyqtSlot()
     def page_ready(self):
@@ -447,10 +443,6 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
             Slice_Keep_Right.triggered.connect(partial(self.Slice_Triggered, MENU_SLICE_KEEP_RIGHT, clip_ids, trans_ids, position))
             menu.addMenu(Slice_Menu)
             return menu.popup(QCursor.pos())
-
-    @pyqtSlot(str)
-    def PlayCuts(self, cuts_json):
-        self.PlayCutsSignal.emit(cuts_json)
 
     @pyqtSlot(str)
     def ShowEffectMenu(self, effect_id=None):
@@ -2647,7 +2639,7 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
         self.page().mainFrame().addToJavaScriptWindowObject('mainWindow', self.window)
 
         # Initialize snapping mode
-        #self.SetSnappingMode(self.window.actionSnappingTool.isChecked())
+        self.SetSnappingMode(self.window.actionSnappingTool.isChecked())
 
     # An item is being dragged onto the timeline (mouse is entering the timeline now)
     def dragEnterEvent(self, event):

@@ -48,54 +48,18 @@ class PreviewParent(QObject):
     # Signal when the frame position changes in the preview player
     def onPositionChanged(self, current_frame):
         self.parent.movePlayhead(current_frame)
+        #print("onPositionChanged", current_frame, self.worker.timeline_length)
 
         # Check if we are at the end of the timeline
         if self.worker.player.Mode() == openshot.PLAYBACK_PLAY and current_frame >= self.worker.timeline_length and self.worker.timeline_length != -1:
             # Yes, pause the video
-            self.parent.actionPlay.trigger()
+            self.parent.actionPlay_trigger(None, "pause")
             self.worker.timeline_length = -1
 
     # Signal when the playback mode changes in the preview player (i.e PLAY, PAUSE, STOP)
     def onModeChanged(self, current_mode):
-        log.info('onModeChanged')
-
-
-
-
-
-    def MInit(self, parent, video_widget):
-        # Important vars
-        self.parent = parent
-
-        # Background Worker Thread (for preview video process)
-        self.background = QThread(self)
-        self.worker = PlayerWorker()  # no parent!
-
-        # Init worker variables
-        self.worker.MInit(parent, video_widget)
-
-        # Hook up signals to Background Worker
-        self.worker.position_changed.connect(self.onPositionChanged)
-        self.worker.mode_changed.connect(self.onModeChanged)
-        self.background.started.connect(self.worker.Start)
-        self.worker.finished.connect(self.background.quit)
-
-        # Connect preview thread to main UI signals
-        self.parent.previewFrameSignal.connect(self.worker.previewFrame)
-        self.parent.refreshFrameSignal.connect(self.worker.refreshFrame)
-        self.parent.LoadFileSignal.connect(self.worker.LoadFile)
-        self.parent.PlaySignal.connect(self.worker.Play)
-        self.parent.PauseSignal.connect(self.worker.Pause)
-        self.parent.SeekSignal.connect(self.worker.Seek)
-        self.parent.SpeedSignal.connect(self.worker.Speed)
-        self.parent.StopSignal.connect(self.worker.Stop)
-
-        # Move Worker to new thread, and Start
-        self.worker.moveToThread(self.background)
-        self.background.start()
-
-
-
+        log.info('onModeChanged %s', current_mode)
+        self.parent.onModeChanged(current_mode)
 
     @pyqtSlot(object, object)
     def Init(self, parent, timeline, video_widget):
@@ -139,53 +103,6 @@ class PlayerWorker(QObject):
     finished = pyqtSignal()
 
     timeline = None
-
-    @pyqtSlot(object, object)
-    def MInit(self, parent, videoPreview):
-        self.parent = parent
-        self.timeline = self._createNewTimeLine()
-        self.videoPreview = videoPreview
-        self.clip_path = None
-        self.clip_reader = None
-        self.original_speed = 0
-        self.original_position = 0
-        self.previous_clips = []
-        self.previous_clip_readers = []
-        self.is_running = True
-        self.number = None
-        self.current_frame = None
-        self.current_mode = None
-        self.timeline_length = -1
-
-        # Create QtPlayer class from libopenshot
-        self.player = openshot.QtPlayer()
-
-    def _createNewTimeLine(self):
-        # Get some settings from the project
-        project = get_app().project
-        fps = project.get(["fps"])
-        width = project.get(["width"])
-        height = project.get(["height"])
-        sample_rate = project.get(["sample_rate"])
-        channels = project.get(["channels"])
-        channel_layout = project.get(["channel_layout"])
-
-        # Create an instance of a libopenshot Timeline object
-        # self.clip_reader = openshot.Timeline(width, height, openshot.Fraction(fps["num"], fps["den"]), sample_rate, channels, channel_layout)
-        timeline = openshot.Timeline(width, height, openshot.Fraction(16, 9), sample_rate,
-                                     channels, channel_layout)
-
-        timeline.info.channel_layout = channel_layout
-        timeline.info.has_audio = True
-        timeline.info.has_video = True
-        timeline.info.video_length = 999999
-        timeline.info.duration = 999999
-        timeline.info.sample_rate = sample_rate
-        timeline.info.channels = channels
-
-        # Open the timeline reader
-        timeline.Open()
-        return timeline
 
     @pyqtSlot(object, object)
     def Init(self, parent, timeline, videoPreview):
