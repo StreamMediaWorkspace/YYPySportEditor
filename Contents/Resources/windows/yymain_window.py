@@ -59,6 +59,9 @@ class YYMainWindow(QMainWindow, updates.UpdateWatcher):
         # Setup timeline
         self.timelineWidget = YYTimelineWidget(self)
         self.layout.addWidget(self.timelineWidget)
+        self.timelineWidget.PlayCutsSignal.connect(self.PlayCuts)
+
+        self.cutPlayer = None
 
         # Process events before continuing
         # TODO: Figure out why this is needed for a backup recovery to correctly show up on the timeline
@@ -161,6 +164,9 @@ class YYMainWindow(QMainWindow, updates.UpdateWatcher):
         # Process any queued events
         QCoreApplication.processEvents()
 
+        if self.cutPlayer:
+            self.cutPlayer.close()
+
         self.timelineWidget.close()
         # Stop preview thread (and wait for it to end)
         self.player.close()
@@ -236,9 +242,16 @@ class YYMainWindow(QMainWindow, updates.UpdateWatcher):
         #cuts_json = "[{\"id\": \"FOUFKXVQ80\",\"layer\": \"0\",\"color\": \"#fff000\",\"start\": 75.0,\"duration\": 600,\"shortCut\": \"Meta+Shift+C\",\"end\": 600.75}]"
         self.player.PauseSignal.emit()
         log.info("PlayCuts %s", cuts_json)
-        cutsPlayer = YYCutPlayerWidget(self.timeline_sync.timeline, cuts_json)
-        cutsPlayer.resize(200, 200)
-        cutsPlayer.show()
+        '''
+        self.cutPlayer = YYCutPlayerDlg(cuts_json, clips_json)
+        self.cutPlayer.resize(200, 200)
+        self.cutPlayer.show()
+        '''
+
+        self.cutPlayer = YYCutPlayerWidget(self.timeline_sync.timeline, cuts_json)  # YYCutPlayerDlg(cuts_json, clips_json)
+        self.cutPlayer.resize(200, 200)
+        self.cutPlayer.show()
+
 
     def create_lock_file(self):
         """Create a lock file"""

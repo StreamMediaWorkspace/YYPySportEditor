@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0b959974-0162-4ae6-a8c3-4d6898aee621" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Resources/windows/video_widget-bak.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/windows/views/timeline_webview-bak.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/windows/yymain_window.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/windows/yyplayer_widget.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Resources/windows/yytimeline_widget.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/windows/yycutplayer_dialog-bak.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/windows/yycutplayer_dialog.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Resources/windows/yyplayer_widget-bak.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/classes/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/classes/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Resources/timeline/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/timeline/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Resources/timeline/js/controllers.js" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/timeline/js/controllers.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Resources/windows/Player.py" beforeDir="false" />
@@ -24,9 +21,10 @@
       <change beforePath="$PROJECT_DIR$/Resources/windows/ui/file-properties.ui" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Resources/windows/ui/preferences.ui" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Resources/windows/ui/title-editor.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/windows/video_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/video_widget.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Resources/windows/views/timeline_webview.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/views/timeline_webview.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Resources/windows/yy_main_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/yy_main_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/windows/yymain_window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/yymain_window.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/windows/yyplayer_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/yyplayer_widget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/windows/yytimeline_widget.py" beforeDir="false" afterPath="$PROJECT_DIR$/Resources/windows/yytimeline_widget.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +81,7 @@
       <updated>1578750843939</updated>
       <workItem from="1578750850184" duration="16822000" />
       <workItem from="1578815486208" duration="8265000" />
-      <workItem from="1579149714697" duration="87313000" />
+      <workItem from="1579149714697" duration="124908000" />
     </task>
     <servers />
   </component>
@@ -129,10 +127,11 @@
     <state x="415" y="87" width="674" height="708" key="find.popup/44.23.1396.877@44.23.1396.877" timestamp="1579704566419" />
     <state x="416" y="87" width="673" height="708" key="find.popup/45.23.1395.877@45.23.1395.877" timestamp="1579356105103" />
     <state x="417" y="87" width="673" height="708" key="find.popup/47.23.1393.877@47.23.1393.877" timestamp="1579661210403" />
-    <state x="416" y="203" width="671" height="676" key="search.everywhere.popup" timestamp="1579749921138">
-      <screen x="43" y="23" width="1397" height="877" />
+    <state x="417" y="203" width="671" height="676" key="search.everywhere.popup" timestamp="1580307774195">
+      <screen x="44" y="23" width="1396" height="877" />
     </state>
     <state x="416" y="203" width="671" height="676" key="search.everywhere.popup/43.23.1397.877@43.23.1397.877" timestamp="1579749921138" />
+    <state x="417" y="203" width="671" height="676" key="search.everywhere.popup/44.23.1396.877@44.23.1396.877" timestamp="1580307774195" />
     <state x="417" y="203" width="670" height="676" key="search.everywhere.popup/45.23.1395.877@45.23.1395.877" timestamp="1579318742072" />
   </component>
 </project>

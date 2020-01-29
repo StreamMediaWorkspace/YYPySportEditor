@@ -85,7 +85,7 @@
 			<div id="track-container" tl-track style="width: {{GetTimelineWidth(1024)}}px; padding-bottom: 2px;">
 				<!-- TRACKS -->
 				<div ng-repeat="layer in project.layers.slice()" id="track_{{layer.id}}" ng-right-click="ShowTimelineMenu($event, layer.number)" class="{{GetTrackStyle(layer.lock)}}" style="width:{{GetTimelineWidth(1024)}}px;">
-					<div ng-repeat="cut in project.cuts.slice() | filter:{layer: layer.id}" id="cut_{{cut.id}}" ng-dblclick="PlayCut($event, cut)" style="background-color:{{cut.color}}; left:{{GetPositionByFrame(cut.start)}}px; width:{{GetPositionByFrame(cut.duration)}}px;" class="cut">
+					<div ng-repeat="cut in project.cuts.slice() | filter:{layer: layer.id}" id="cut_{{cut.id}}" ng-dblclick="PlayCut(cut, $event)" style="background-color:{{cut.color}}; left:{{GetPositionByFrame(cut.start)}}px; width:{{GetPositionByFrame(cut.duration)}}px;" class="cut">
 					</div>
 				</div>
 			</div>

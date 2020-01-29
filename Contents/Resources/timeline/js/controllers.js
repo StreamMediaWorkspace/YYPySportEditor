@@ -174,7 +174,7 @@ App.controller('TimelineCtrl',function($scope) {
                    //
 				   //  ],
 		cuts: [
-			{id:'0', layer : 0, color: '#fff000', start: 100, duration: 400.0, end: 500.0, shortCut: 'ctl+x'}, 
+			{id:'0', layer : 0, color: '#fff000', start: 10, duration: 30.0, end: 40.0, shortCut: 'ctl+x'}, 
 			//{id:'1', layer : '1', color: '#000fff', start: 20, duration: 100, shortCut: 'ctl+x'},
 		],
 	  	layers : [
@@ -862,6 +862,14 @@ $scope.ShowClipMenu = function(clip_id, event) {
  	}
 };
 
+$scope.PlayCut = function(cut, event) {
+	if ($scope.Qt && !$scope.enable_razor) {
+		var cuts_json = '[' + JSON.stringify(cut) + ']'
+		timeline.qt_log("PlayCut:"+cuts_json)
+		timeline.PlayCuts(cuts_json);
+	}
+};
+
 // Show clip context menu
 $scope.ShowEffectMenu = function(effect_id) {
  	if ($scope.Qt && !$scope.enable_razor) {
@@ -908,14 +916,6 @@ $scope.ShowTimelineMenu = function(e, layer_number) {
  	if ($scope.Qt && !$scope.enable_razor) {
 	 	timeline.ShowTimelineMenu($scope.GetJavaScriptPosition(e.pageX), layer_number);
 	 }
-};
-
-$scope.PlayCut = function(e, cut) {
-	console.log("PlayCuts", cut);
-	if ($scope.Qt && !$scope.enable_razor) {
-		var cuts_json = '[' + JSON.stringify(cut) + ']'
-		timeline.PlayCuts(cuts_json);
-	}
 };
 
  // Get the name of the track

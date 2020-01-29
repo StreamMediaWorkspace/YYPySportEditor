@@ -124,9 +124,9 @@ class YYPlayerBaseWidget(QWidget, updates.UpdateWatcher):
         self.videoPreview = VideoWidget(self)
         self.layout.addWidget(self.videoPreview)
 
-        # Set max size of video preview (for speed) #todo ============
-        #viewport_rect = self.videoPreview.centeredViewport(self.videoPreview.width(), self.videoPreview.height())
-        #timeline.SetMaxSize(viewport_rect.width(), viewport_rect.height())
+        # Set max size of video preview (for speed)
+        viewport_rect = self.videoPreview.centeredViewport(self.videoPreview.width(), self.videoPreview.height())
+        timeline.SetMaxSize(viewport_rect.width(), viewport_rect.height())
 
         self.setLayout(self.layout)
 
@@ -157,18 +157,7 @@ class YYPlayerBaseWidget(QWidget, updates.UpdateWatcher):
         self.preview_parent.background.wait(5000)
 
     def btnPlay_clicked(self, force=None):
-        # Determine max frame (based on clips)
-        timeline_length = 0.0
-        fps = self.timeline.info.fps.ToFloat()
-        clips = self.timeline.Clips()
-        for clip in clips:
-            clip_last_frame = clip.Position() + clip.Duration()
-            if clip_last_frame > timeline_length:
-                # Set max length of timeline
-                timeline_length = clip_last_frame
-
-        # Convert to int and round
-        timeline_length_int = round(timeline_length * fps) + 1
+        log.info("btnPlay_clicked")
 
         if force == "pause":
             self.hover.btnPlay.setChecked(False)
@@ -176,12 +165,17 @@ class YYPlayerBaseWidget(QWidget, updates.UpdateWatcher):
             self.hover.btnPlay.setChecked(True)
 
         if self.hover.btnPlay.isChecked():
-            # ui_util.setup_icon(self, self.actionPlay, "actionPlay", "media-playback-pause")
-            self.PlaySignal.emit(timeline_length_int)
-
+            log.info('play (icon to pause)')
+            #ui_util.setup_icon(self, self.btnPlay, "actionPlay", "media-playback-pause")
+            self.preview_thread.Play(1000)#======todo
         else:
-            # ui_util.setup_icon(self, self.actionPlay, "actionPlay")  # to default
-            self.PauseSignal.emit()
+            log.info('pause (icon to play)')
+            #ui_util.setup_icon(self, self.btnPlay, "actionPlay", "media-playback-start")  # to default
+            self.preview_thread.Pause()
+
+        # Send focus back to toolbar
+        #self.sliderVideo.setFocus()
+
 
     def resizeEvent(self, QResizeEvent):
         super().resizeEvent(QResizeEvent)
@@ -211,8 +205,10 @@ class YYPlayerBaseWidget(QWidget, updates.UpdateWatcher):
 class YYPlayerWidget(YYPlayerBaseWidget):
 
     def __init__(self, timeline, parent=None):
-        self.timeline = timeline
         YYPlayerBaseWidget.__init__(self, timeline, parent)
+        #_ = get_app()._tr  # Get translation function
+
+        #self.resize(800, 200)
 
     def movePlayhead(self, position_frames):
         """Update playhead position"""
@@ -221,7 +217,36 @@ class YYPlayerWidget(YYPlayerBaseWidget):
         self.movePlayheadSignal.emit(position_frames)
 
     def onPlayFinished(self):
-        self.btnPlay_clicked("pause")
+        self.btnPlay_clicked(None, "pause")
+
+    def btnPlay_clicked(self, force=None):
+        # Determine max frame (based on clips)
+        timeline_length = 0.0
+        fps = get_app().window.timeline_sync.timeline.info.fps.ToFloat()
+        clips = get_app().window.timeline_sync.timeline.Clips()
+        for clip in clips:
+            clip_last_frame = clip.Position() + clip.Duration()
+            if clip_last_frame > timeline_length:
+                # Set max length of timeline
+                timeline_length = clip_last_frame
+
+        # Convert to int and round
+        timeline_length_int = round(timeline_length * fps) + 1
+
+        if force == "pause":
+            self.hover.btnPlay.setChecked(False)
+        elif force == "play":
+            self.hover.btnPlay.setChecked(True)
+
+        if self.hover.btnPlay.isChecked():
+            #ui_util.setup_icon(self, self.actionPlay, "actionPlay", "media-playback-pause")
+            self.PlaySignal.emit(timeline_length_int)
+            print("---------play")
+
+        else:
+            #ui_util.setup_icon(self, self.actionPlay, "actionPlay")  # to default
+            print("---------pause")
+            self.PauseSignal.emit()
 
     #todo not used
     def handlePausedVideo(self):
@@ -232,53 +257,95 @@ class YYPlayerWidget(YYPlayerBaseWidget):
 
 class YYCutPlayerWidget(YYPlayerBaseWidget):
 
-    def __init__(self, native_timeline, cuts_json, parent=None):
+    def __init__(self, cuts_json, clips_json, parent=None):
+        self.cuts = self.jsonToCuts(cuts_json)
+        self.timeline = self.initTimeline(self.cuts, clips_json)
+        YYPlayerBaseWidget.__init__(self, self.timeline, parent)
+        self.index = -1
+        self.currentCut = None
+        self.initialized = True
+        #self.actionPlay_trigger(None, "play")
+
+    def initTimeline(self, cuts, clips_json):
+        project = get_app().project
+        fps = project.get(["fps"])
+        width = project.get(["width"])
+        height = project.get(["height"])
+        sample_rate = project.get(["sample_rate"])
+        channels = project.get(["channels"])
+        channel_layout = project.get(["channel_layout"])
+        '''
+        self.file_path = file.absolute_path()
+        self.video_length = int(file.data['video_length'])
+        self.fps_num = int(file.data['fps']['num'])
+        self.fps_den = int(file.data['fps']['den'])
+        self.fps = float(self.fps_num) / float(self.fps_den)
+        self.width = int(file.data['width'])
+        self.height = int(file.data['height'])
+        self.sample_rate = int(file.data['sample_rate'])
+        self.channels = int(file.data['channels'])
+        self.channel_layout = int(file.data['channel_layout'])
+
+        # Open video file with Reader
+        log.info(self.file_path)
+        '''
+
+        # Create an instance of a libopenshot Timeline object
+        timeline = openshot.Timeline(width, height, openshot.Fraction(fps["num"], fps["den"]), sample_rate,
+                                   channels, channel_layout)
+
+        try:
+            # Add clip for current preview file
+            clip = openshot.Clip("/Users/admin/Downloads/BLACKPINK_Kill_This_Love.mp4")
+
+            # Show waveform for audio files
+            if not clip.Reader().info.has_video and clip.Reader().info.has_audio:
+                clip.Waveform(True)
+
+            # Set has_audio property
+            #timeline.info.has_audio = clip.Reader().info.has_audio
+
+            timeline.AddClip(clip)
+
+        except:
+            log.error('Failed to load media file into preview player: %s' % self.file_path)
+            return None
+
+        timeline.Open()
+        return timeline
         try:
             import json
         except ImportError:
             import simplejson as json
 
-        self.clips = []
-        self.cuts = self.jsonToCuts(cuts_json)
-        self.initTimeline(native_timeline, self.cuts)
-        YYPlayerBaseWidget.__init__(self, self.timeline, parent)
-        self.index = -1
-        self.currentCut = None
-        self.initialized = True
-        self.btnPlay_clicked("play")
-
-    def initTimeline(self, native_timeline, cuts):
+        s = settings.get_settings()
+        project = get_app().project
         # Get some settings from the project
-        fps = native_timeline.info.fps
-        width = native_timeline.info.width
-        height = native_timeline.info.height
-        sample_rate = native_timeline.info.sample_rate
-        channels = native_timeline.info.channels
-        channel_layout = native_timeline.info.channel_layout
+        fps = project.get(["fps"])
+        width = project.get(["width"])
+        height = project.get(["height"])
+        sample_rate = project.get(["sample_rate"])
+        channels = project.get(["channels"])
+        channel_layout = project.get(["channel_layout"])
 
-        print("=======------", channel_layout)
-
-        # Create new "export" openshot.Timeline object
-        self.timeline = openshot.Timeline(width, height, openshot.Fraction(fps.num, fps.den),
-                                          sample_rate, channels, channel_layout)
-
-        self.timeline.info.channel_layout = native_timeline.info.channel_layout
-        self.timeline.info.has_audio = native_timeline.info.has_audio
-        self.timeline.info.has_video = native_timeline.info.has_video
-        self.timeline.info.video_length = native_timeline.info.video_length
-        self.timeline.info.duration = native_timeline.info.duration
-        self.timeline.info.sample_rate = native_timeline.info.sample_rate
-        self.timeline.info.channels = native_timeline.info.channels
-
-        json_timeline = json.dumps(get_app().project._data)
-        self.timeline.SetJson(json_timeline)
+        # Create an instance of a libopenshot Timeline object
+        timeline = openshot.Timeline(width, height, openshot.Fraction(fps["num"], fps["den"]), sample_rate,
+                                          channels, channel_layout)
+        timeline.info.channel_layout = channel_layout
+        timeline.info.has_audio = True
+        timeline.info.has_video = True
+        timeline.info.video_length = 99999
+        timeline.info.duration = 999.99
+        timeline.info.sample_rate = sample_rate
+        timeline.info.channels = channels
 
         # Open the timeline reader
-        self.timeline.Open()
+        timeline.Open()
+#self.timeline.ApplyMapperToClips
 
+        print("0------", timeline.info)
         #return timeline
 
-        '''
         clips = self.jsonToClips(clips_json)
         print("222222222222221111", clips)
         for cut in cuts:
@@ -290,18 +357,19 @@ class YYCutPlayerWidget(YYPlayerBaseWidget):
                     path = clip["reader"]["path"]
                     print("-----000000", path)
                     c = openshot.Clip(path)
-                    self.clips.append(c)
+                    #c.Start(cut["start"])
+                    #c.End(cut["end"])
                     #c.Position = 0#cut["start"]
 
                     # Append missing attributes to Clip JSON
-                    new_clip = json.loads(c.Json(), strict=False)
-                    new_clip.SetJson(c.Json())
-                    new_clip["start"] = cut["start"]
-                    new_clip["end"] = cut["end"]
-                    new_clip["position"] = 0#cut["start"]
+                    #new_clip = json.loads(c.Json(), strict=False)
+                    #new_clip.SetJson(clip.Json())
+                    #new_clip["start"] = cut["start"]
+                    #new_clip["end"] = cut["end"]
+                    #new_clip["position"] = 0#cut["start"]
                     try:
                         # Add clip for current preview file
-                        c.SetJson(new_clip)
+                        #c.SetJson(new_clip)
                         c.display = openshot.FRAME_DISPLAY_CLIP
 
                         timeline.AddClip(c)
@@ -314,7 +382,7 @@ class YYCutPlayerWidget(YYPlayerBaseWidget):
                 #self.timeline.Slice_Triggered(0, clip_ids, trans_ids, playhead_position)
         # Open and set reader
         #timeline.Open()
-        '''
+        return timeline
 
         # Connect to signal
         #self.window.MaxSizeChanged.connect(self.MaxSizeChangedCB)
@@ -370,6 +438,15 @@ class YYCutPlayerWidget(YYPlayerBaseWidget):
 
         '''
 
+    def getIntersectClips(self, clips, value):
+        ret = []
+        for clip in clips:
+            print("-----09999",value, clip["position"] , clip["end"] , clip["start"])
+            if clip["position"] <= value and (clip["position"] + clip["end"] - clip["start"] >= value):
+                ret.append(clip)
+        print("----0000000",ret)
+        return ret
+
     def jsonToCuts(self, cuts_json):
         cuts = []
         try:
@@ -382,147 +459,66 @@ class YYCutPlayerWidget(YYPlayerBaseWidget):
             log.error("load cuts failed %s", cuts_json)
 
         return cuts
-    '''
-    def Slice_Triggered(self, action, clip_ids, trans_ids, playhead_position=0):
-        """Callback for slice context menus"""
-        # Get FPS from project
-        fps = get_app().project.get(["fps"])
-        fps_num = float(fps["num"])
-        fps_den = float(fps["den"])
-        fps_float = fps_num / fps_den
-        frame_duration = fps_den / fps_num
 
-        # Get the nearest starting frame position to the playhead (this helps to prevent cutting
-        # in-between frames, and thus less likely to repeat or skip a frame).
-        playhead_position = float(round((playhead_position * fps_num) / fps_den) * fps_den) / fps_num
+    def jsonToClips(self, clips_json):
+        clips = []
+        try:
+            if not isinstance(clips_json, dict):
+                clips = json.loads(clips_json)
+            else:
+                clips = clips_json
+        except:
+            # Failed to parse json, do nothing
+            log.error("load cuts failed %s", clips_json)
 
-        # Loop through each clip (using the list of ids)
-        for clip_id in clip_ids:
+        return clips
 
-            # Get existing clip object
-            clip = Clip.get(id=clip_id)
-            if not clip:
-                # Invalid clip, skip to next item
-                continue
+    def getNextCut(self):
+        while (True):
+            self.index = self.index + 1
+            if len(self.cuts) < self.index + 1:
+                return None
 
-            # Determine if waveform needs to be redrawn
-            has_audio_data = clip_id in self.waveform_cache
+            if self.cuts[self.index]:
+                return self.cuts[self.index]
 
-            if action == MENU_SLICE_KEEP_LEFT or action == MENU_SLICE_KEEP_BOTH:
-                # Get details of original clip
-                position_of_clip = float(clip.data["position"])
-                start_of_clip = float(clip.data["start"])
+    def actionPlay_trigger(self, event, force=None):
+        # Determine max frame (based on clips)
+        if not self.currentCut:
+            self.currentCut = self.getNextCut()
+            if not self.currentCut:
+                log.info("play cut finished")
+                if force == "play":
+                    self.index = -1
+                    self.currentCut = self.getNextCut()
+                else:
+                    return
+            else:
+                self.SeekSignal.emit(float(self.currentCut["start"]))
 
-                # Set new 'end' of clip
-                clip.data["end"] = start_of_clip + (playhead_position - position_of_clip)
+        timeline_length = float(self.currentCut["end"])
+        fps = get_app().window.timeline_sync.timeline.info.fps.ToFloat()
 
-            elif action == MENU_SLICE_KEEP_RIGHT:
-                # Get details of original clip
-                position_of_clip = float(clip.data["position"])
-                start_of_clip = float(clip.data["start"])
+        # Convert to int and round
+        timeline_length_int = round(timeline_length * fps) + 1
 
-                # Set new 'end' of clip
-                clip.data["position"] = playhead_position
-                clip.data["start"] = start_of_clip + (playhead_position - position_of_clip)
+        if force == None or force == "pause":
+            # ui_util.setup_icon(self, self.actionPlay, "actionPlay")  # to default
+            self.currentCut = self.getNextCut()
+            if not self.currentCut:
+                log.info("play cut finished last finished")
+                self.PauseSignal.emit()
+            else:
+                self.SeekSignal.emit(float(self.currentCut["start"]))
+                log.info("------SeekSignal-------", float(self.currentCut["start"]))
+        else:
+            #ui_util.setup_icon(self, self.actionPlay, "actionPlay", "media-playback-pause")
+            #if timeline_length_int >= self.preview_thread.current_frame:
+            #    self.SeekSignal.emit(1)#move to begine to play
+            print("----play----", timeline_length_int)
+            self.PlaySignal.emit(timeline_length_int)
 
-                # Update thumbnail for right clip (after the clip has been created)
-                self.UpdateClipThumbnail(clip.data)
+        #QCoreApplication.processEvents()
 
-            if action == MENU_SLICE_KEEP_BOTH:
-                # Add the 2nd clip (the right side, since the left side has already been adjusted above)
-                # Get right side clip object
-                right_clip = Clip.get(id=clip_id)
-                if not right_clip:
-                    # Invalid clip, skip to next item
-                    continue
 
-                # Remove the ID property from the clip (so it becomes a new one)
-                right_clip.id = None
-                right_clip.type = 'insert'
-                right_clip.data.pop('id')
-                right_clip.key.pop(1)
 
-                # Set new 'start' of right_clip (need to bump 1 frame duration more, so we don't repeat a frame)
-                right_clip.data["position"] = (round(float(playhead_position) * fps_float) + 1) / fps_float
-                right_clip.data["start"] = (round(float(clip.data["end"]) * fps_float) + 2) / fps_float
-
-                # Save changes
-                right_clip.save()
-
-                # Update thumbnail for right clip (after the clip has been created)
-                self.UpdateClipThumbnail(right_clip.data)
-
-                # Save changes again (with new thumbnail)
-                self.update_clip_data(right_clip.data, only_basic_props=False, ignore_reader=True)
-
-                if has_audio_data:
-                    # Add right clip audio to cache
-                    self.waveform_cache[right_clip.id] = self.waveform_cache.get(clip_id, '[]')
-
-                    # Pass audio to javascript timeline (and render)
-                    cmd = JS_SCOPE_SELECTOR + ".setAudioData('" + right_clip.id + "', " + self.waveform_cache.get(
-                        right_clip.id) + ");"
-                    self.page().mainFrame().evaluateJavaScript(cmd)
-
-            # Save changes
-            self.update_clip_data(clip.data, only_basic_props=False, ignore_reader=True)
-
-        # Start timer to redraw audio waveforms
-        self.redraw_audio_timer.start()
-
-        # Loop through each transition (using the list of ids)
-        for trans_id in trans_ids:
-            # Get existing transition object
-            trans = Transition.get(id=trans_id)
-            if not trans:
-                # Invalid transition, skip to next item
-                continue
-
-            if action == MENU_SLICE_KEEP_LEFT or action == MENU_SLICE_KEEP_BOTH:
-                # Get details of original transition
-                position_of_tran = float(trans.data["position"])
-
-                # Set new 'end' of transition
-                trans.data["end"] = playhead_position - position_of_tran
-
-            elif action == MENU_SLICE_KEEP_RIGHT:
-                # Get details of transition clip
-                position_of_tran = float(trans.data["position"])
-                end_of_tran = float(trans.data["end"])
-
-                # Set new 'end' of transition
-                trans.data["position"] = playhead_position
-                trans.data["end"] = end_of_tran - (playhead_position - position_of_tran)
-
-            if action == MENU_SLICE_KEEP_BOTH:
-                # Add the 2nd transition (the right side, since the left side has already been adjusted above)
-                # Get right side transition object
-                right_tran = Transition.get(id=trans_id)
-                if not right_tran:
-                    # Invalid transition, skip to next item
-                    continue
-
-                # Remove the ID property from the transition (so it becomes a new one)
-                right_tran.id = None
-                right_tran.type = 'insert'
-                right_tran.data.pop('id')
-                right_tran.key.pop(1)
-
-                # Get details of original transition
-                position_of_tran = float(right_tran.data["position"])
-                end_of_tran = float(right_tran.data["end"])
-
-                # Set new 'end' of right_tran
-                right_tran.data["position"] = playhead_position + frame_duration
-                right_tran.data["end"] = end_of_tran - (playhead_position - position_of_tran) + frame_duration
-
-                # Save changes
-                right_tran.save()
-
-                # Save changes again (right side)
-                self.update_transition_data(right_tran.data, only_basic_props=False)
-
-            # Save changes (left side)
-            self.update_transition_data(trans.data, only_basic_props=False)
-
-    '''

@@ -1922,6 +1922,91 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
             # Save changes (left side)
             self.update_transition_data(trans.data, only_basic_props=False)
 
+    '''
+    def Slice_Cut_Triggered(self, action, clip_ids, key, color, playhead_position=0):
+        """Callback for slice context menus"""
+        # Get FPS from project
+        fps = get_app().project.get(["fps"])
+        fps_num = float(fps["num"])
+        fps_den = float(fps["den"])
+        fps_float = fps_num / fps_den
+        frame_duration = fps_den / fps_num
+
+        # Get the nearest starting frame position to the playhead (this helps to prevent cutting
+        # in-between frames, and thus less likely to repeat or skip a frame).
+        playhead_position = float(round((playhead_position * fps_num) / fps_den ) * fps_den ) / fps_num
+
+        # Loop through each clip (using the list of ids)
+        for clip_id in clip_ids:
+
+            # Get existing clip object
+            clip = Clip.get(id=clip_id)
+            if not clip:
+                # Invalid clip, skip to next item
+                continue
+
+            if clip.data["shortcut"] and clip.data["shortcut"] != key:
+                log.info("shorcut key is %s, skip", key)
+                continue
+
+            # Determine if waveform needs to be redrawn
+            has_audio_data = clip_id in self.waveform_cache
+
+            # Get details of original clip
+            position_of_clip = float(clip.data["position"])
+            start_of_clip = float(clip.data["start"])
+
+            # Set new 'end' of clip
+            clip.data["end"] = start_of_clip + (playhead_position - position_of_clip)
+
+            # Add the 2nd clip (the right side, since the left side has already been adjusted above)
+            # Get right side clip object
+            right_clip = Clip.get(id=clip_id)
+            if not right_clip:
+                # Invalid clip, skip to next item
+                continue
+
+            # Remove the ID property from the clip (so it becomes a new one)
+            right_clip.id = None
+            right_clip.type = 'insert'
+            right_clip.data.pop('id')
+            right_clip.key.pop(1)
+
+            # Set new 'start' of right_clip (need to bump 1 frame duration more, so we don't repeat a frame)
+            right_clip.data["position"] = (round(float(playhead_position) * fps_float) + 1) / fps_float
+            right_clip.data["start"] = (round(float(clip.data["end"]) * fps_float) + 2) / fps_float
+
+            if clip.data["valid"]:
+                clip.data["finished"] = True
+            else:
+                right_clip.data["finished"] = False
+                right_clip.data["valid"] = True
+                right_clip.data["color"] = color
+
+            # Save changes
+            right_clip.save()
+
+            # Update thumbnail for right clip (after the clip has been created)
+            self.UpdateClipThumbnail(right_clip.data)
+
+            # Save changes again (with new thumbnail)
+            self.update_clip_data(right_clip.data, only_basic_props=False, ignore_reader=True)
+
+            if has_audio_data:
+                # Add right clip audio to cache
+                self.waveform_cache[right_clip.id] = self.waveform_cache.get(clip_id, '[]')
+
+                # Pass audio to javascript timeline (and render)
+                cmd = JS_SCOPE_SELECTOR + ".setAudioData('" + right_clip.id + "', " + self.waveform_cache.get(right_clip.id) + ");"
+                self.page().mainFrame().evaluateJavaScript(cmd)
+
+        # Save changes
+        self.update_clip_data(clip.data, only_basic_props=False, ignore_reader=True)
+
+        # Start timer to redraw audio waveforms
+        #self.redraw_audio_timer.start()
+    '''
+
     def Volume_Triggered(self, action, clip_ids, position="Entire Clip"):
         """Callback for volume context menus"""
         log.info(action)

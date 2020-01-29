@@ -118,17 +118,22 @@ class YYTimelineWidget(QWidget, updates.UpdateWatcher):
         track.save()
         return track
 
+    '''
+    def cut(self, key, current_frame, color):
+        # Timeline keyboard shortcuts
+        playhead_position = current_frame
+        intersecting_clips = Clip.filter(intersect=playhead_position)
+        #intersecting_trans = Transition.filter(intersect=playhead_position)
+        if intersecting_clips# or intersecting_trans:
+            # Get list of clip ids
+            clip_ids = [c.id for c in intersecting_clips]
+            #trans_ids = [t.id for t in intersecting_trans]
+            #self.timeline.Slice_Triggered(0, clip_ids, trans_ids, playhead_position)
+            self.timeline.Slice_Cut_Triggered(0, clip_ids, key, color, playhead_position)
+    '''
+
     def cut(self, key, current_frame, color):
         log.info("add cut %s,%s, %s", key, current_frame, color)
-
-        '''
-        layerid = -1;
-        layers = get_app().project.get(["layers"])
-        if (len(layers) == 0):  # add first track if no
-            layerid = self.addTrack("track_test_auto").data["id"]
-        else:
-            layerid = layers[0].data["id"]
-        '''
 
         # Get # of tracks
         find = False
@@ -145,3 +150,6 @@ class YYTimelineWidget(QWidget, updates.UpdateWatcher):
             cut = Cut()
             cut.data = {"id": str(id), "layer": "0", "color": color, "start": current_frame, "duration": 0.0, "shortCut": key, "end": -1}
             cut.save()
+
+    def PlayCuts(self, cuts_json):
+        self.PlayCutsSignal.emit(cuts_json)
