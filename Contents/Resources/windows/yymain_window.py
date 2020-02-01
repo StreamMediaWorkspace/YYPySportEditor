@@ -23,7 +23,7 @@ from classes.version import *
 from classes.conversion import zoomToSeconds, secondsToZoom
 from images import openshot_rc
 from windows.yytimeline_widget import YYTimelineWidget
-from windows.yyplayer_widget import YYPlayerWidget, YYCutPlayerWidget
+from windows.yyplayer_widget import YYPlayerWidget, YYCutPlayerDlg
 
 
 class YYMainWindow(QMainWindow, updates.UpdateWatcher):
@@ -194,6 +194,7 @@ class YYMainWindow(QMainWindow, updates.UpdateWatcher):
             log.info("Imported media file {}".format(file_path))
 
     def keyPressEvent(self, event):
+        current_frame = self.player.preview_thread.current_frame
         key_value = event.key()
         print(key_value)
 
@@ -212,8 +213,7 @@ class YYMainWindow(QMainWindow, updates.UpdateWatcher):
         color = self.getColorByName("actionCut+"+key.toString())
         print("actionCut+"+key.toString(), color)
         if color:
-            print("-----------color", color)
-            self.timelineWidget.cut(key.toString(), self.player.preview_thread.current_frame, color)
+            self.timelineWidget.cut(key.toString(), current_frame, color)
         elif key.matches(self.getShortcutByName("actionAddTrack")) == QKeySequence.ExactMatch:
             self.timelineWidget.addTrack("track_test")
 
@@ -238,19 +238,19 @@ class YYMainWindow(QMainWindow, updates.UpdateWatcher):
         # Load Recent Projects
         #self.load_recent_menu()
 
-    def PlayCuts(self, cuts_json):
+    def PlayCuts(self, cuts_json, num, den):
         #cuts_json = "[{\"id\": \"FOUFKXVQ80\",\"layer\": \"0\",\"color\": \"#fff000\",\"start\": 75.0,\"duration\": 600,\"shortCut\": \"Meta+Shift+C\",\"end\": 600.75}]"
         self.player.PauseSignal.emit()
         log.info("PlayCuts %s", cuts_json)
-        '''
-        self.cutPlayer = YYCutPlayerDlg(cuts_json, clips_json)
-        self.cutPlayer.resize(200, 200)
-        self.cutPlayer.show()
-        '''
 
-        self.cutPlayer = YYCutPlayerWidget(self.timeline_sync.timeline, cuts_json)  # YYCutPlayerDlg(cuts_json, clips_json)
+        import gc
+        self.cutPlayer = YYCutPlayerDlg(self.timeline_sync.timeline, cuts_json, num, den)  # YYCutPlayerDlg(cuts_json, clips_json)
         self.cutPlayer.resize(200, 200)
-        self.cutPlayer.show()
+        #self.cutPlayer.show()
+        self.cutPlayer.exec_()
+        del self.cutPlayer
+        self.cutPlayer = None
+        gc.collect()
 
 
     def create_lock_file(self):

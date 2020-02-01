@@ -164,7 +164,7 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
     html_path = os.path.join(info.PATH, 'timeline', 'index.html')
     last_file_end = 0.0
 
-    PlayCutsSignal = pyqtSignal(str)
+    PlayCutsSignal = pyqtSignal(str, str, str)
 
     @pyqtSlot()
     def page_ready(self):
@@ -448,9 +448,9 @@ class TimelineWebView(QWebView, updates.UpdateInterface):
             menu.addMenu(Slice_Menu)
             return menu.popup(QCursor.pos())
 
-    @pyqtSlot(str)
-    def PlayCuts(self, cuts_json):
-        self.PlayCutsSignal.emit(cuts_json)
+    @pyqtSlot(str, str, str)
+    def PlayCuts(self, cuts_json, num, den):
+        self.PlayCutsSignal.emit(cuts_json, num, den)
 
     @pyqtSlot(str)
     def ShowEffectMenu(self, effect_id=None):

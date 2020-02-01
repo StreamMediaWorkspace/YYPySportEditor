@@ -33,7 +33,7 @@ class YYTimelineWidget(QWidget, updates.UpdateWatcher):
     LoadFileSignal = pyqtSignal(str)
     previewFrameSignal = pyqtSignal(int)
 
-    PlayCutsSignal = pyqtSignal(str)
+    PlayCutsSignal = pyqtSignal(str, str, str)
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -133,7 +133,17 @@ class YYTimelineWidget(QWidget, updates.UpdateWatcher):
     '''
 
     def cut(self, key, current_frame, color):
-        log.info("add cut %s,%s, %s", key, current_frame, color)
+        log.info("----------add cut %s,%s, %s", key, current_frame, color)
+
+        fps = get_app().project.get(["fps"])
+        print("======00000000======", json.dumps(get_app().project._data))
+        #fps_num = float(fps["num"])
+        #fps_den = float(fps["den"])
+        #fps_float = fps_num / fps_den
+
+        #playhead_position = float(current_frame - 1) / fps_float
+        #playhead_position = float(round((playhead_position * fps_num) / fps_den) * fps_den) / fps_num
+        #clip.data["start"] = float(clip.data["start"]) + (playhead_position - float(clip.data["position"]))
 
         # Get # of tracks
         find = False
@@ -141,15 +151,21 @@ class YYTimelineWidget(QWidget, updates.UpdateWatcher):
         for cut in cutList:
             if cut and cut.data["end"] == -1:
                 cut.data["end"] = current_frame
+                cut.data["duration"] = current_frame - float(cut.data["start"])
+
+                print("-------duration----end", cut)
                 cut.save()
                 find = True
 
         # Create new track above existing layer(s)
         if not find:
+            print("start======== current_frame", current_frame, current_frame)
             id = len(get_app().project.get(["cuts"]))
             cut = Cut()
             cut.data = {"id": str(id), "layer": "0", "color": color, "start": current_frame, "duration": 0.0, "shortCut": key, "end": -1}
             cut.save()
 
-    def PlayCuts(self, cuts_json):
-        self.PlayCutsSignal.emit(cuts_json)
+
+
+    def PlayCuts(self, cuts_json, num, den):
+        self.PlayCutsSignal.emit(cuts_json, num, den)

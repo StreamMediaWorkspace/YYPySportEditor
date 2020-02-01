@@ -174,8 +174,8 @@ App.controller('TimelineCtrl',function($scope) {
                    //
 				   //  ],
 		cuts: [
-			{id:'0', layer : 0, color: '#fff000', start: 10, duration: 30.0, end: 40.0, shortCut: 'ctl+x'}, 
-			//{id:'1', layer : '1', color: '#000fff', start: 20, duration: 100, shortCut: 'ctl+x'},
+			{id:'0', layer : '0', color: '#fff000', start: 8, duration: 8, end: 16, shortCut: 'ctl+x'}, 
+			//{id:'1', layer : '1', color: '#000fff', start: 30, duration: 10, end: 40.0, shortCut: 'ctl+x'},
 		],
 	  	layers : [
 			{
@@ -274,6 +274,7 @@ App.controller('TimelineCtrl',function($scope) {
 
   // Move the playhead to a specific time
   $scope.MovePlayhead = function(position_seconds) {
+	  timeline.qt_log("MovePlayhead:"+position_seconds);
 	  // Update internal scope (in seconds)
 	  $scope.project.playhead_position = position_seconds;
 	  $scope.playheadTime = secondsToTime(position_seconds, $scope.project.fps.num, $scope.project.fps.den);
@@ -361,6 +362,8 @@ App.controller('TimelineCtrl',function($scope) {
 	  // Determine frame
 	  var frames_per_second = $scope.project.fps.num / $scope.project.fps.den;
 	  var frame = Math.round(position_seconds * frames_per_second) + 1;
+
+	  timeline.qt_log("PreviewFrame------frame:"+frame);
 
 	  // Update GUI with position (so the preview can be updated)
 	  if ($scope.Qt) {
@@ -866,7 +869,7 @@ $scope.PlayCut = function(cut, event) {
 	if ($scope.Qt && !$scope.enable_razor) {
 		var cuts_json = '[' + JSON.stringify(cut) + ']'
 		timeline.qt_log("PlayCut:"+cuts_json)
-		timeline.PlayCuts(cuts_json);
+		timeline.PlayCuts(cuts_json, $scope.project.fps.num, $scope.project.fps.den);
 	}
 };
 
