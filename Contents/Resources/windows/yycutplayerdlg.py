@@ -51,7 +51,7 @@ class Cutting(QDialog):
     """ Cutting Dialog """
 
     # Path to ui file
-    ui_path = os.path.join(info.PATH, 'windows', 'ui', 'cutting.ui')
+    ui_path = os.path.join(info.PATH, 'windows', 'ui', 'cut-player.ui')
 
     # Signals for preview thread
     previewFrameSignal = pyqtSignal(int)
@@ -104,48 +104,31 @@ class Cutting(QDialog):
 
         # Open video file with Reader
         log.info(self.file_path)
-        self.video_length = 0
+
         # Create an instance of a libopenshot Timeline object
         self.r = openshot.Timeline(self.width, self.height, openshot.Fraction(self.fps_num, self.fps_den), self.sample_rate, self.channels, self.channel_layout)
         self.r.info.channel_layout = self.channel_layout
-        
-        self.clips = []
-        cuts = [{"start":1, "end":5}, {"start":5, "end":6}, {"start":8, "end":9}, {"start":11, "end":12}
-        , {"start":14, "end":15}, {"start":17, "end":18}, {"start":20, "end":21}, {"start":30, "end":50}]
-        position = 0
-        
-        for cut in cuts:
-            try:
-                # Add clip for current preview file
-                self.clip = clip = openshot.Clip(self.file_path)
-                self.clips.append(clip)
 
-                # Show waveform for audio files
-                if not clip.Reader().info.has_video and clip.Reader().info.has_audio:
-                    clip.Waveform(True)
+        try:
+            # Add clip for current preview file
+            self.clip = openshot.Clip(self.file_path)
 
-                # Set has_audio property
-                self.r.info.has_audio = clip.Reader().info.has_audio
+            # Show waveform for audio files
+            if not self.clip.Reader().info.has_video and self.clip.Reader().info.has_audio:
+                self.clip.Waveform(True)
 
-                if preview:
-                    # Display frame #'s during preview
-                    clip.display = openshot.FRAME_DISPLAY_CLIP
-                
-                start = float(cut["start"])
-                end = float(cut["end"])
-                print("=======================-------start:", start, "end:", end)
-                clip.Start(start)
-                clip.End(end)
-                clip.Position(position)
-                position = position + (end - start)
-                #clip.Duration(end-start)
-                self.r.AddClip(clip)
-                self.video_length = self.video_length + (end - start)
-            except:
-                log.error('Failed to load media file into preview player: %s' % self.file_path)
-                return
+            # Set has_audio property
+            self.r.info.has_audio = self.clip.Reader().info.has_audio
 
-        self.video_length = self.video_length * self.fps_num / self.fps_den
+            if preview:
+                # Display frame #'s during preview
+                self.clip.display = openshot.FRAME_DISPLAY_CLIP
+
+            self.r.AddClip(self.clip)
+        except:
+            log.error('Failed to load media file into preview player: %s' % self.file_path)
+            return
+
         # Add Video Widget
         self.videoPreview = VideoWidget()
         self.videoPreview.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
@@ -406,8 +389,7 @@ class Cutting(QDialog):
 
         # Close readers
         self.r.Close()
-        for clip in self.clips:
-            clip.Close()
+        self.clip.Close()
         self.r.ClearAllCache()
 
     def reject(self):
